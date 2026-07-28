@@ -2,14 +2,13 @@
 
 ## Alcance de esta entrega (sábado 1 de agosto de 2026)
 
-Por el tiempo disponible (6 días desde hoy, lunes 27 de julio), esta entrega cubre **4 de los 5 Casos de Uso**, en el orden que respeta las dependencias de datos entre ellos:
+Esta entrega cubre **los 5 Casos de Uso completos**, en el orden que respeta las dependencias de datos entre ellos (ver `Plan_Tareas_Detallado.md` para el detalle bloque por bloque, organizado por CU en vez de por día):
 
-1. **CU1 — Mantenimiento de Usuarios** (base: sin usuarios no hay nada más)
+1. **CU1 — Mantenimiento de Usuarios** (base: sin usuarios no hay nada más) — *en progreso, login/autenticación ya completo*
 2. **CU3 — Asignación de Turnos** (depende de que existan empleados)
 3. **CU2 — Marcaje** (depende de que el empleado tenga turno asignado)
 4. **CU5 — Gestión del Empleado** (solicitudes de permisos/cambio de turno)
-
-**CU4 — Gestión de solicitudes** (aprobar/rechazar lo que el empleado envía en CU5) queda como **backlog futuro**, fuera de esta entrega. Si en realidad "el 4to CU" se refería a otro alcance (por ejemplo, incluir CU4 en vez de CU5, o el orden documental 1-2-3-4), ajusta la tabla de prioridades más abajo.
+5. **CU4 — Gestión de solicitudes** (aprobar/rechazar lo que el empleado envía en CU5, y las solicitudes que llegan a RRHH desde CU1)
 
 ---
 
@@ -102,9 +101,7 @@ Formato de criterios de aceptación: **Dado / Cuando / Entonces**, basado direct
 
 ---
 
-### Backlog futuro (fuera de esta entrega)
-
-### Épica 5 — CU4: Gestión de solicitudes *(Sprint posterior)*
+### Épica 5 — CU4: Gestión de solicitudes (Prioridad 5)
 
 **HU4.1 — Aprobar/Rechazar Cambio de Turno** (Admin Área)
 **HU4.2 — Aprobar/Rechazar Licencias/Vacaciones** (Admin Área, con envío a Admin RRHH)

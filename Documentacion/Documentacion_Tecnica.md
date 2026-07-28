@@ -5,6 +5,7 @@
 - **Lenguaje:** Java 1.8.0_231
 - **Interfaz gráfica:** `javax.swing`
 - **Persistencia:** archivo de texto (`.txt`) o binario — sin motor de base de datos ni frameworks
+- **Proyecto/Build:** NetBeans (Ant), paquete raíz `sistemacontrolturnos`
 - **Alcance de esta entrega:** CU1 (Mantenimiento de Usuarios), CU3 (Asignación de Turnos), CU2 (Marcaje), CU5 (Gestión del Empleado). CU4 (Gestión de solicitudes) queda para una iteración posterior (ver `Backlog_Scrum.md`).
 
 ---
@@ -48,17 +49,24 @@ flowchart LR
 
 ## 4. Estructura de paquetes
 
+Proyecto NetBeans (Ant), no Maven. Paquete raíz único `sistemacontrolturnos` (sin prefijo `com.*`). Interfaces e implementaciones conviven en el mismo paquete (no hay subpaquetes `impl/`); la separación se mantiene igual por el nombre de la clase (`IUsuarioService` / `UsuarioServiceImpl`).
+
 ```
-SistemaControlTurnos/
-├── src/com/controlturnos/
-│   ├── Main.java
-│   ├── presentacion/       # Vistas Swing (JFrame/JPanel/JDialog)
-│   ├── controlador/        # Orquestan Vista <-> Servicio (usan DTO)
-│   ├── dto/                # Objetos de transporte Controlador -> Servicio
-│   ├── servicio/           # Interfaces + impl/ (lógica de negocio)
-│   ├── dao/                # Interfaces + impl/ (acceso a archivo)
-│   ├── entidad/             # Modelo de datos persistente
-│   └── util/                # ManejadorArchivos, Constantes, Validaciones
+SistemaControlTurnos/                  # raíz del repo Git = raíz del proyecto NetBeans
+├── build.xml                          # build Ant (generado por NetBeans)
+├── manifest.mf
+├── nbproject/
+├── build/                             # (generado, ignorado por git)
+├── dist/                              # (generado, ignorado por git)
+├── src/sistemacontrolturnos/
+│   ├── SistemaControlTurnos.java      # clase principal (Main)
+│   ├── presentacion/                  # Vistas Swing (JFrame/JPanel/JDialog)
+│   ├── controlador/                   # Orquestan Vista <-> Service (usan DTO)
+│   ├── dto/                           # Objetos de transporte Controlador -> Service
+│   ├── servicio/                      # Interfaces (I*Service) + implementaciones (*ServiceImpl)
+│   ├── dao/                           # Interfaces (I*DAO) + implementaciones (*DAOTexto)
+│   ├── entidad/                       # Modelo de datos persistente
+│   └── util/                          # ManejadorArchivos, Constantes, Validaciones
 └── data/
     ├── usuarios.txt
     ├── turnos.txt
