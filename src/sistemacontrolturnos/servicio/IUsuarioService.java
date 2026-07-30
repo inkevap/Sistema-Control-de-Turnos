@@ -12,4 +12,6 @@ public interface IUsuarioService {
     void registrar(UsuarioDTO usuarioDTO);
 
     List<Usuario> buscar(String filtroUsuario, String filtroArea);
+
+    void inactivar(String nombreUsuario, String motivo);
 }

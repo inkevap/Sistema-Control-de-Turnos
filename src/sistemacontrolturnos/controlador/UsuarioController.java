@@ -8,7 +8,9 @@ import sistemacontrolturnos.dao.UsuarioDAOTexto;
 import sistemacontrolturnos.dto.UsuarioDTO;
 import sistemacontrolturnos.entidad.Usuario;
 import sistemacontrolturnos.servicio.BitacoraServiceImpl;
+import sistemacontrolturnos.servicio.CorreoServiceImpl;
 import sistemacontrolturnos.servicio.IBitacoraService;
+import sistemacontrolturnos.servicio.ICorreoService;
 import sistemacontrolturnos.servicio.IUsuarioService;
 import sistemacontrolturnos.servicio.UsuarioServiceImpl;
 
@@ -20,7 +22,8 @@ public class UsuarioController {
         IUsuarioDAO usuarioDAO = new UsuarioDAOTexto();
         IBitacoraDAO bitacoraDAO = new BitacoraDAOTexto();
         IBitacoraService bitacoraService = new BitacoraServiceImpl(bitacoraDAO);
-        this.usuarioService = new UsuarioServiceImpl(usuarioDAO, bitacoraService);
+        ICorreoService correoService = new CorreoServiceImpl();
+        this.usuarioService = new UsuarioServiceImpl(usuarioDAO, bitacoraService, correoService);
     }
 
     public void registrarEmpleado(UsuarioDTO usuarioDTO) {
@@ -29,5 +32,9 @@ public class UsuarioController {
 
     public List<Usuario> consultarUsuarios(String filtroUsuario, String filtroArea) {
         return usuarioService.buscar(filtroUsuario, filtroArea);
+    }
+
+    public void inactivarUsuario(String nombreUsuario, String motivo) {
+        usuarioService.inactivar(nombreUsuario, motivo);
     }
 }
