@@ -7,6 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
+import sistemacontrolturnos.presentacion.marcaje.MarcajeView;
 import sistemacontrolturnos.presentacion.usuario.AgregarEmpleadoView;
 import sistemacontrolturnos.presentacion.usuario.ConsultarUsuarioView;
 import sistemacontrolturnos.presentacion.usuario.GestionRolesView;
@@ -56,7 +57,10 @@ public class MenuPrincipalView extends JFrame {
             panel.add(new JButton("Gestion de Solicitudes"));
         }
         if (rol == Rol.EMPLEADO) {
-            panel.add(new JButton("Marcaje"));
+            JButton botonMarcaje = new JButton("Marcaje");
+            botonMarcaje.addActionListener(evento -> new MarcajeView(usuarioActivo.getNombreUsuario()).setVisible(true));
+            panel.add(botonMarcaje);
+
             panel.add(new JButton("Gestiones del Empleado"));
         }
 
