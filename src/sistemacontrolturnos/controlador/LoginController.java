@@ -1,9 +1,13 @@
 package sistemacontrolturnos.controlador;
 
+import sistemacontrolturnos.dao.BitacoraDAOTexto;
+import sistemacontrolturnos.dao.IBitacoraDAO;
 import sistemacontrolturnos.dao.IUsuarioDAO;
 import sistemacontrolturnos.dao.UsuarioDAOTexto;
 import sistemacontrolturnos.dto.CredencialesDTO;
 import sistemacontrolturnos.entidad.Usuario;
+import sistemacontrolturnos.servicio.BitacoraServiceImpl;
+import sistemacontrolturnos.servicio.IBitacoraService;
 import sistemacontrolturnos.servicio.IUsuarioService;
 import sistemacontrolturnos.servicio.UsuarioServiceImpl;
 
@@ -13,7 +17,9 @@ public class LoginController {
 
     public LoginController() {
         IUsuarioDAO usuarioDAO = new UsuarioDAOTexto();
-        this.usuarioService = new UsuarioServiceImpl(usuarioDAO);
+        IBitacoraDAO bitacoraDAO = new BitacoraDAOTexto();
+        IBitacoraService bitacoraService = new BitacoraServiceImpl(bitacoraDAO);
+        this.usuarioService = new UsuarioServiceImpl(usuarioDAO, bitacoraService);
     }
 
     public Usuario iniciarSesion(String nombreUsuario, String contrasena) {

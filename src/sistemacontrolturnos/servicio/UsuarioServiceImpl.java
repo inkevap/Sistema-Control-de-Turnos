@@ -3,17 +3,22 @@ package sistemacontrolturnos.servicio;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import sistemacontrolturnos.dao.IUsuarioDAO;
 import sistemacontrolturnos.dto.CredencialesDTO;
+import sistemacontrolturnos.dto.UsuarioDTO;
 import sistemacontrolturnos.entidad.EstadoUsuario;
 import sistemacontrolturnos.entidad.Usuario;
 
 public class UsuarioServiceImpl implements IUsuarioService {
 
     private final IUsuarioDAO usuarioDAO;
+    private final IBitacoraService bitacoraService;
 
-    public UsuarioServiceImpl(IUsuarioDAO usuarioDAO) {
+    public UsuarioServiceImpl(IUsuarioDAO usuarioDAO, IBitacoraService bitacoraService) {
         this.usuarioDAO = usuarioDAO;
+        this.bitacoraService = bitacoraService;
     }
 
     @Override
@@ -29,6 +34,43 @@ public class UsuarioServiceImpl implements IUsuarioService {
             return null;
         }
         return usuario;
+    }
+
+    @Override
+    public void registrar(UsuarioDTO usuarioDTO) {
+        if (usuarioDAO.buscarPorUsuario(usuarioDTO.getNombreUsuario()) != null) {
+            throw new IllegalStateException("El usuario ya existe");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setDpi(usuarioDTO.getDpi());
+        usuario.setNombreCompleto(usuarioDTO.getNombreCompleto());
+        usuario.setNombreUsuario(usuarioDTO.getNombreUsuario());
+        usuario.setArea(usuarioDTO.getArea());
+        usuario.setTurno(usuarioDTO.getTurno());
+        usuario.setRol(usuarioDTO.getRol());
+        usuario.setSupervisorUsuario(usuarioDTO.getSupervisorUsuario());
+        usuario.setCorreo(usuarioDTO.getCorreo());
+        usuario.setContrasenaHash(hashear(usuarioDTO.getContrasena()));
+        usuario.setEstado(EstadoUsuario.ACTIVO);
+
+        usuarioDAO.guardar(usuario);
+        bitacoraService.registrar(usuarioDTO.getNombreUsuario(), "Se registro el empleado " + usuarioDTO.getNombreUsuario());
+    }
+
+    @Override
+    public List<Usuario> buscar(String filtroUsuario, String filtroArea) {
+        List<Usuario> resultado = new ArrayList<>();
+        for (Usuario usuario : usuarioDAO.listarTodos()) {
+            boolean coincideUsuario = filtroUsuario == null || filtroUsuario.isEmpty()
+                    || usuario.getNombreUsuario().toLowerCase().contains(filtroUsuario.toLowerCase());
+            boolean coincideArea = filtroArea == null || filtroArea.isEmpty()
+                    || usuario.getArea().toLowerCase().contains(filtroArea.toLowerCase());
+            if (coincideUsuario && coincideArea) {
+                resultado.add(usuario);
+            }
+        }
+        return resultado;
     }
 
     public static String hashear(String texto) {
