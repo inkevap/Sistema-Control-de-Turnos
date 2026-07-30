@@ -21,7 +21,7 @@ public class MarcajeView extends JFrame {
     private void construirInterfaz() {
         setTitle("Marcaje");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(300, 260);
+        setSize(300, 300);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(0, 1, 10, 10));
 
@@ -29,6 +29,10 @@ public class MarcajeView extends JFrame {
         agregarBoton("Marcar Primer Descanso", TipoMarcaje.DESCANSO_1);
         agregarBoton("Marcar Segundo Descanso", TipoMarcaje.DESCANSO_2);
         agregarBoton("Marcar Salida", TipoMarcaje.SALIDA);
+
+        JButton botonInformacion = new JButton("Informacion del Marcaje");
+        botonInformacion.addActionListener(evento -> new InformacionMarcajeView(nombreUsuario).setVisible(true));
+        add(botonInformacion);
 
         JButton botonRegresar = new JButton("Regresar");
         botonRegresar.addActionListener(evento -> dispose());
