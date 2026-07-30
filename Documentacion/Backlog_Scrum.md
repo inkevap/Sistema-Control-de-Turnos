@@ -109,22 +109,11 @@ Formato de criterios de aceptación: **Dado / Cuando / Entonces**, basado direct
 
 ---
 
-## Plan de Sprints comprimido (6 días — 27 jul al 1 ago 2026)
+## Plan de Sprints — por Caso de Uso
 
-Dado el tiempo real disponible, cada "sprint" aquí es de 1 día. El objetivo diario es cerrar con algo que compile y se pueda demostrar (Definition of Done abajo).
+La ejecución detallada, bloque por bloque (uno por CU, con checklist de clases y validaciones), ya no está organizada por día calendario sino **por caso de uso** — ver [`Plan_Tareas_Detallado.md`](Plan_Tareas_Detallado.md), que también refleja el avance real (Bloque 0 - Infraestructura ya completo, Bloque 1 - CU1 en progreso).
 
-| Día | Fecha | Objetivo | Horas est. |
-|---|---|---|---|
-| 1 | Lun 27 jul | Setup: estructura de paquetes, `Main`, `ManejadorArchivos`, entidades base, Login + Menú principal | ~8 h |
-| 2 | Mar 28 jul | CU1: DTO/Servicio/DAO de Usuario + vista "Agregar Empleado" + "Consultar Usuario" | ~8 h |
-| 3 | Mié 29 jul | CU1: terminar (Inactivar, Gestión de Roles, Solicitudes) + pruebas del flujo completo | ~8 h |
-| 4 | Jue 30 jul | CU3: Asignación de Turnos completo (con las 4 validaciones RN02-RN04) | ~7 h |
-| 5 | Vie 31 jul | CU2: Marcaje completo (entrada, descansos, salida, info, validaciones de duplicado/hora) | ~9 h |
-| 6 | Sáb 1 ago | CU5: Gestión del Empleado (ambos formularios) + pruebas finales + empaquetar entrega | ~8 h |
-
-**Total: ~48 horas en 6 días (~8 h/día).** Sigue siendo exigente — para aligerar carga sin perder alcance, considera:
-- Simular el envío de correo (registrar en bitácora "correo enviado a X") en vez de integrar SMTP real por ahora; el SMTP real se puede añadir después sin tocar el resto (ver Documentacion_Tecnica.md, capa de Servicio).
-- No escribir pruebas unitarias exhaustivas todavía — priorizar que cada CU funcione de punta a punta.
+Orden de entrega: **CU1 → CU3 → CU2 → CU5 → CU4**, respetando las dependencias de datos entre ellos.
 
 ---
 
@@ -142,5 +131,7 @@ Una historia se considera terminada cuando:
 Columnas: **Backlog** | **En progreso** | **Hecho**
 
 Estado inicial sugerido:
-- **Backlog:** HU1.1–HU1.5, HU3.1, HU2.1–HU2.4, HU5.1–HU5.2, HU4.1–HU4.2 (futuro)
-- **En progreso / Hecho:** se van moviendo conforme avanzas cada día del plan de arriba.
+- **Hecho:** Infraestructura (Bloque 0), Login/autenticación
+- **En progreso:** HU1.1–HU1.5 (CU1)
+- **Backlog:** HU3.1, HU2.1–HU2.4, HU5.1–HU5.2, HU4.1–HU4.2
+- Se van moviendo conforme avanzas cada bloque de `Plan_Tareas_Detallado.md`.
