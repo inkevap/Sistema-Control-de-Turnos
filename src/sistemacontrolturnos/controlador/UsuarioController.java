@@ -6,6 +6,7 @@ import sistemacontrolturnos.dao.IBitacoraDAO;
 import sistemacontrolturnos.dao.IUsuarioDAO;
 import sistemacontrolturnos.dao.UsuarioDAOTexto;
 import sistemacontrolturnos.dto.UsuarioDTO;
+import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
 import sistemacontrolturnos.servicio.BitacoraServiceImpl;
 import sistemacontrolturnos.servicio.CorreoServiceImpl;
@@ -36,5 +37,13 @@ public class UsuarioController {
 
     public void inactivarUsuario(String nombreUsuario, String motivo) {
         usuarioService.inactivar(nombreUsuario, motivo);
+    }
+
+    public void agregarRol(String nombreUsuario, Rol nuevoRol) {
+        usuarioService.agregarRol(nombreUsuario, nuevoRol);
+    }
+
+    public void eliminarRol(String nombreUsuario) {
+        usuarioService.eliminarRol(nombreUsuario);
     }
 }
