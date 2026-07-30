@@ -9,6 +9,7 @@ import sistemacontrolturnos.dao.IUsuarioDAO;
 import sistemacontrolturnos.dto.CredencialesDTO;
 import sistemacontrolturnos.dto.UsuarioDTO;
 import sistemacontrolturnos.entidad.EstadoUsuario;
+import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
 
 public class UsuarioServiceImpl implements IUsuarioService {
@@ -89,6 +90,30 @@ public class UsuarioServiceImpl implements IUsuarioService {
                 "Hola " + usuario.getNombreCompleto() + ",\n\nTu cuenta ha sido inactivada.\nMotivo: " + motivo);
 
         bitacoraService.registrar(nombreUsuario, "Se inactivo el usuario " + nombreUsuario + " (motivo: " + motivo + ")");
+    }
+
+    @Override
+    public void agregarRol(String nombreUsuario, Rol nuevoRol) {
+        Usuario usuario = usuarioDAO.buscarPorUsuario(nombreUsuario);
+        if (usuario == null) {
+            throw new IllegalStateException("El usuario no existe");
+        }
+        usuario.setRol(nuevoRol);
+        usuarioDAO.actualizar(usuario);
+        bitacoraService.registrar(nombreUsuario, "Se asigno el rol " + nuevoRol + " al usuario " + nombreUsuario);
+    }
+
+    @Override
+    public void eliminarRol(String nombreUsuario) {
+        Usuario usuario = usuarioDAO.buscarPorUsuario(nombreUsuario);
+        if (usuario == null) {
+            throw new IllegalStateException("El usuario no existe");
+        }
+        // La entidad Usuario modela un solo rol (no una lista), asi que "eliminar"
+        // revierte al rol base EMPLEADO en vez de dejar al usuario sin ningun rol.
+        usuario.setRol(Rol.EMPLEADO);
+        usuarioDAO.actualizar(usuario);
+        bitacoraService.registrar(nombreUsuario, "Se elimino el rol del usuario " + nombreUsuario + " (revertido a EMPLEADO)");
     }
 
     public static String hashear(String texto) {
