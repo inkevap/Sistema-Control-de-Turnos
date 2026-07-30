@@ -1,0 +1,1 @@
+1|admin|VACACIONES|2026-08-05|2026-08-10|Vacaciones familiares|PENDIENTE_RRHH

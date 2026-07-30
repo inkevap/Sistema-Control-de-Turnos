@@ -7,6 +7,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
+import sistemacontrolturnos.presentacion.usuario.AgregarEmpleadoView;
+import sistemacontrolturnos.presentacion.usuario.ConsultarUsuarioView;
+import sistemacontrolturnos.presentacion.usuario.GestionRolesView;
+import sistemacontrolturnos.presentacion.usuario.SolicitudesRRHHView;
 
 public class MenuPrincipalView extends JFrame {
 
@@ -20,7 +24,7 @@ public class MenuPrincipalView extends JFrame {
     private void construirInterfaz() {
         setTitle("Sistema Control de Turnos - Menu Principal");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 300);
+        setSize(400, 320);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new GridLayout(0, 1, 10, 10));
@@ -31,7 +35,21 @@ public class MenuPrincipalView extends JFrame {
         Rol rol = usuarioActivo.getRol();
 
         if (rol == Rol.ADMIN_RRHH) {
-            panel.add(new JButton("Mantenimiento de Usuarios"));
+            JButton botonAgregar = new JButton("Agregar Empleado");
+            botonAgregar.addActionListener(evento -> new AgregarEmpleadoView().setVisible(true));
+            panel.add(botonAgregar);
+
+            JButton botonConsultar = new JButton("Consultar Usuario");
+            botonConsultar.addActionListener(evento -> new ConsultarUsuarioView().setVisible(true));
+            panel.add(botonConsultar);
+
+            JButton botonRoles = new JButton("Gestion de Roles");
+            botonRoles.addActionListener(evento -> new GestionRolesView().setVisible(true));
+            panel.add(botonRoles);
+
+            JButton botonSolicitudes = new JButton("Solicitudes RRHH");
+            botonSolicitudes.addActionListener(evento -> new SolicitudesRRHHView().setVisible(true));
+            panel.add(botonSolicitudes);
         }
         if (rol == Rol.ADMIN_AREA) {
             panel.add(new JButton("Asignacion de Turnos"));
