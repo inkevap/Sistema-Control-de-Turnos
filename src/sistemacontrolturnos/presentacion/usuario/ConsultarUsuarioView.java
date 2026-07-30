@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,6 +16,11 @@ import sistemacontrolturnos.controlador.UsuarioController;
 import sistemacontrolturnos.entidad.Usuario;
 
 public class ConsultarUsuarioView extends JFrame {
+
+    private static final String[] MOTIVOS_INACTIVACION = {
+        "Permiso Personal", "Vacaciones", "Citas IGSS",
+        "Licencia de cumpleanos", "Suspension Laboral", "Otros"
+    };
 
     private final UsuarioController controlador;
     private JTextField campoFiltroUsuario;
@@ -58,6 +64,9 @@ public class ConsultarUsuarioView extends JFrame {
         add(new JScrollPane(tabla), BorderLayout.CENTER);
 
         JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton botonInactivar = new JButton("Inactivar seleccionado");
+        botonInactivar.addActionListener(evento -> inactivarSeleccionado());
+        panelAcciones.add(botonInactivar);
         JButton botonRegresar = new JButton("Regresar");
         botonRegresar.addActionListener(evento -> dispose());
         panelAcciones.add(botonRegresar);
@@ -71,5 +80,27 @@ public class ConsultarUsuarioView extends JFrame {
         for (Usuario usuario : usuarios) {
             modeloTabla.addRow(new Object[]{usuario.getNombreUsuario(), usuario.getArea(), usuario.getEstado()});
         }
+    }
+
+    private void inactivarSeleccionado() {
+        int filaSeleccionada = tabla.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Selecciona un usuario primero");
+            return;
+        }
+        String nombreUsuario = (String) modeloTabla.getValueAt(filaSeleccionada, 0);
+
+        String motivo = (String) JOptionPane.showInputDialog(this, "Motivo de inactivacion:",
+                "Inactivar Usuario", JOptionPane.QUESTION_MESSAGE, null,
+                MOTIVOS_INACTIVACION, MOTIVOS_INACTIVACION[0]);
+
+        if (motivo == null) {
+            // FA05: el usuario cancelo el dialogo, regresa sin hacer cambios
+            return;
+        }
+
+        controlador.inactivarUsuario(nombreUsuario, motivo);
+        JOptionPane.showMessageDialog(this, "Usuario inactivado correctamente");
+        buscar();
     }
 }
