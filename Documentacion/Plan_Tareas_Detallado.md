@@ -25,39 +25,39 @@ Prerrequisito de los 5 CU. No es un caso de uso en sí, pero todos dependen de e
 
 ---
 
-## BLOQUE 1 — CU1: Mantenimiento de Usuarios (Admin RRHH) (~10-11 h restantes)
+## BLOQUE 1 — CU1: Mantenimiento de Usuarios (Admin RRHH) ✅ COMPLETO
 
 Ya tienes: autenticación/login (Bloque 0) y el DAO de Usuario con lectura/escritura básica. Falta todo el flujo propio del CU.
 
 ### 1.1 Agregar Empleado (HU1.1, FA04)
-- [ ] `dto/UsuarioDTO.java` — dpi, nombreCompleto, nombreUsuario, area, turno, rol, supervisorUsuario, correo, contrasena (texto plano, solo en el DTO)
-- [ ] `IUsuarioService.registrar(UsuarioDTO)` + impl — valida duplicado (`buscarPorUsuario` != null → error), hashea contraseña con `UsuarioServiceImpl.hashear(...)`, delega a `usuarioDAO.guardar(...)`, registra en bitácora
-- [ ] `presentacion/usuario/AgregarEmpleadoView.java` — formulario completo + combos (Turno, Rol, Supervisor) + botones Registrar/Regresar
-- [ ] `controlador/UsuarioController.java` — `registrarEmpleado(UsuarioDTO)`
-- [ ] Mensajes: éxito "se creó correctamente"; error si usuario duplicado
+- [x] `dto/UsuarioDTO.java` — dpi, nombreCompleto, nombreUsuario, area, turno, rol, supervisorUsuario, correo, contrasena (texto plano, solo en el DTO)
+- [x] `IUsuarioService.registrar(UsuarioDTO)` + impl — valida duplicado (`buscarPorUsuario` != null → error), hashea contraseña con `UsuarioServiceImpl.hashear(...)`, delega a `usuarioDAO.guardar(...)`, registra en bitácora
+- [x] `presentacion/usuario/AgregarEmpleadoView.java` — formulario completo + combos (Turno, Rol, Supervisor) + botones Registrar/Regresar
+- [x] `controlador/UsuarioController.java` — `registrarEmpleado(UsuarioDTO)`
+- [x] Mensajes: éxito "se creó correctamente"; error si usuario duplicado
 
 ### 1.2 Consultar Usuario (HU1.2, FA02)
-- [ ] `IUsuarioService.buscar(filtroUsuario, filtroArea)` — filtra sobre `listarTodos()`
-- [ ] `presentacion/usuario/ConsultarUsuarioView.java` — tabla Usuario/Área/Estado/Acciones + filtro
+- [x] `IUsuarioService.buscar(filtroUsuario, filtroArea)` — filtra sobre `listarTodos()`
+- [x] `presentacion/usuario/ConsultarUsuarioView.java` — tabla Usuario/Área/Estado/Acciones + filtro
 
 ### 1.3 Inactivar Usuario (HU1.3, FA03, FA05, Postcondición 1)
-- [ ] Diálogo de motivo (Permiso Personal, Vacaciones, Citas IGSS, Licencia cumpleaños, Suspensión Laboral, Otros)
-- [ ] `IUsuarioService.inactivar(nombreUsuario, motivo)` — cambia `estado` a `INACTIVO`, sobreescribe con `ManejadorArchivos.escribirTodasLasLineas(...)` (necesitas este método para actualizar una línea existente, no solo agregar)
-- [ ] `servicio/ICorreoService.java` + `CorreoServiceImpl.java` (JavaMail SMTP, ya está la librería agregada) — notifica al empleado
-- [ ] Botón "Cancelar" regresa sin cambios (FA05)
+- [x] Diálogo de motivo (Permiso Personal, Vacaciones, Citas IGSS, Licencia cumpleaños, Suspensión Laboral, Otros)
+- [x] `IUsuarioService.inactivar(nombreUsuario, motivo)` — cambia `estado` a `INACTIVO`, sobreescribe con `ManejadorArchivos.escribirTodasLasLineas(...)` (necesitas este método para actualizar una línea existente, no solo agregar)
+- [x] `servicio/ICorreoService.java` + `CorreoServiceImpl.java` (JavaMail SMTP, ya está la librería agregada) — notifica al empleado
+- [x] Botón "Cancelar" regresa sin cambios (FA05)
 
 ### 1.4 Gestión de Roles (HU1.4, FA09)
-- [ ] `presentacion/usuario/GestionRolesView.java` — usuario + combo rol + Agregar/Eliminar
-- [ ] `IUsuarioService.agregarRol(...)`/`eliminarRol(...)` — mensajes de éxito específicos
+- [x] `presentacion/usuario/GestionRolesView.java` — usuario + combo rol + Agregar/Eliminar
+- [x] `IUsuarioService.agregarRol(...)`/`eliminarRol(...)` — mensajes de éxito específicos
 
 ### 1.5 Solicitudes RRHH — Aprobar/Rechazar (HU1.5, FA10, RN02)
-- [ ] Reutiliza entidad `SolicitudGestionEmpleado` (se construye en Bloque 4, CU5) para las solicitudes que llegan a RRHH
-- [ ] Validación: la solicitud no debe estar ya procesada por otro Admin RHH — mensaje **"Esta solicitud ya está siendo procesada por otro administrador RHH"**
-- [ ] Notifica por correo al aprobar/rechazar
+- [x] Reutiliza entidad `SolicitudGestionEmpleado` (se construye en Bloque 4, CU5) para las solicitudes que llegan a RRHH
+- [x] Validación: la solicitud no debe estar ya procesada por otro Admin RHH — mensaje **"Esta solicitud ya está siendo procesada por otro administrador RHH"**
+- [x] Notifica por correo al aprobar/rechazar
 
 ### Cierre del bloque
-- [ ] Prueba manual de punta a punta de los 5 sub-módulos
-- [ ] Commit en rama `feature/cu1-mantenimiento-usuarios`, push, PR a `main`
+- [x] Prueba manual de punta a punta de los 5 sub-módulos
+- [x] Commit en rama `feature/cu1-mantenimiento-usuarios`, push, PR a `main`
 
 ---
 
@@ -79,20 +79,20 @@ Depende de que existan empleados (Bloque 1).
 
 ---
 
-## BLOQUE 3 — CU2: Marcaje (Empleado) (~7 h)
+## BLOQUE 3 — CU2: Marcaje (Empleado) ✅ COMPLETO
 
-Depende de que el empleado tenga turno asignado (Bloque 2).
+No depende realmente de CU3 (la validacion de hora usa un limite fijo de 8:00am, no el turno asignado) - se construyo antes por eso.
 
-- [ ] `entidad/Marcaje.java` — idMarcaje, nombreUsuario, tipo (ENTRADA, DESCANSO_1, DESCANSO_2, SALIDA), fechaHora
-- [ ] `dto/MarcajeDTO.java`
-- [ ] `dao/IMarcajeDAO.java` + `MarcajeDAOTexto.java` — formato: `idMarcaje|nombreUsuario|tipo|fechaHora`
-- [ ] `servicio/IMarcajeService.java` + `MarcajeServiceImpl.java`, validando:
-  - [ ] Entrada después de las 8:00 am se marca como tardía (RN01)
-  - [ ] No repetir el mismo tipo de marcaje el mismo día — mensaje "No puede repetir el mismo marcaje" (RN02)
-  - [ ] Orden obligatorio: sin entrada no hay descanso 1 (FA05); sin descanso 1 no hay descanso 2 (FA06); sin ambos descansos no hay salida (FA08/FA09)
-- [ ] `presentacion/marcaje/MarcajeView.java` — botones Entrada/Descanso 1/Descanso 2/Salida
-- [ ] Vista "Información del Marcaje" — tabla Usuario/Entrada/1er Descanso/2do Descanso/Salida del día
-- [ ] Prueba manual (fuera de orden debe bloquear, día completo debe funcionar) + commit/push + PR
+- [x] `entidad/Marcaje.java` — idMarcaje, nombreUsuario, tipo (ENTRADA, DESCANSO_1, DESCANSO_2, SALIDA), fechaHora
+- [x] `dto/MarcajeDTO.java`
+- [x] `dao/IMarcajeDAO.java` + `MarcajeDAOTexto.java` — formato: `idMarcaje|nombreUsuario|tipo|fechaHora`
+- [x] `servicio/IMarcajeService.java` + `MarcajeServiceImpl.java`, validando:
+  - [x] Entrada después de las 8:00 am se marca como tardía (RN01)
+  - [x] No repetir el mismo tipo de marcaje el mismo día — mensaje "No puede repetir el mismo marcaje" (RN02)
+  - [x] Orden obligatorio: sin entrada no hay descanso 1 (FA05); sin descanso 1 no hay descanso 2 (FA06); sin ambos descansos no hay salida (FA08/FA09)
+- [x] `presentacion/marcaje/MarcajeView.java` — botones Entrada/Descanso 1/Descanso 2/Salida
+- [x] Vista "Información del Marcaje" — tabla Usuario/Entrada/1er Descanso/2do Descanso/Salida del día
+- [x] Prueba manual (fuera de orden debe bloquear, día completo debe funcionar) + commit/push + PR
 
 ---
 
@@ -137,9 +137,9 @@ Consume lo que genera el Bloque 4 (solicitudes de empleado) y lo que ya existe d
 | Bloque | CU | Estado | Horas restantes est. |
 |---|---|---|---|
 | 0 | Infraestructura | ✅ Completo | 0 h |
-| 1 | CU1 - Mantenimiento de Usuarios | 🔶 Parcial (login hecho) | ~10-11 h |
+| 1 | CU1 - Mantenimiento de Usuarios | ✅ Completo (rama cu1-mantenimiento-usuarios, 5 features) | 0 h |
 | 2 | CU3 - Asignación de Turnos | ⬜ Pendiente | ~5 h |
-| 3 | CU2 - Marcaje | ⬜ Pendiente | ~7 h |
+| 3 | CU2 - Marcaje | ✅ Completo (rama cu2-marcaje, 3 features) | 0 h |
 | 4 | CU5 - Gestión del Empleado | ⬜ Pendiente | ~6 h |
 | 5 | CU4 - Gestión de solicitudes | ⬜ Pendiente | ~5 h |
 | | **Total restante** | | **~33-34 h** |
