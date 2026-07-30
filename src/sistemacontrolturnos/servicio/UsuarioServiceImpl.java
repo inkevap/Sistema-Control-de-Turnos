@@ -15,10 +15,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     private final IUsuarioDAO usuarioDAO;
     private final IBitacoraService bitacoraService;
+    private final ICorreoService correoService;
 
-    public UsuarioServiceImpl(IUsuarioDAO usuarioDAO, IBitacoraService bitacoraService) {
+    public UsuarioServiceImpl(IUsuarioDAO usuarioDAO, IBitacoraService bitacoraService, ICorreoService correoService) {
         this.usuarioDAO = usuarioDAO;
         this.bitacoraService = bitacoraService;
+        this.correoService = correoService;
     }
 
     @Override
@@ -71,6 +73,22 @@ public class UsuarioServiceImpl implements IUsuarioService {
             }
         }
         return resultado;
+    }
+
+    @Override
+    public void inactivar(String nombreUsuario, String motivo) {
+        Usuario usuario = usuarioDAO.buscarPorUsuario(nombreUsuario);
+        if (usuario == null) {
+            throw new IllegalStateException("El usuario no existe");
+        }
+
+        usuario.setEstado(EstadoUsuario.INACTIVO);
+        usuarioDAO.actualizar(usuario);
+
+        correoService.enviarCorreo(usuario.getCorreo(), "Notificacion de inactivacion",
+                "Hola " + usuario.getNombreCompleto() + ",\n\nTu cuenta ha sido inactivada.\nMotivo: " + motivo);
+
+        bitacoraService.registrar(nombreUsuario, "Se inactivo el usuario " + nombreUsuario + " (motivo: " + motivo + ")");
     }
 
     public static String hashear(String texto) {

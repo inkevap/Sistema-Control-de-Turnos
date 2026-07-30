@@ -10,4 +10,6 @@ public interface IUsuarioDAO {
     List<Usuario> listarTodos();
 
     void guardar(Usuario usuario);
+
+    void actualizar(Usuario usuario);
 }
