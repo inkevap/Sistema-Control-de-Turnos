@@ -25,28 +25,50 @@ public class UsuarioDAOTexto implements IUsuarioDAO {
     public List<Usuario> listarTodos() {
         List<Usuario> resultado = new ArrayList<>();
         for (String linea : ManejadorArchivos.leerLineas(Constantes.ARCHIVO_USUARIOS)) {
-            String[] campos = linea.split("\\" + Constantes.DELIMITADOR, -1);
-            Usuario usuario = new Usuario();
-            usuario.setDpi(campos[0]);
-            usuario.setNombreCompleto(campos[1]);
-            usuario.setNombreUsuario(campos[2]);
-            usuario.setArea(campos[3]);
-            usuario.setTurno(TipoTurno.valueOf(campos[4]));
-            usuario.setRol(Rol.valueOf(campos[5]));
-            usuario.setSupervisorUsuario(campos[6]);
-            usuario.setCorreo(campos[7]);
-            usuario.setContrasenaHash(campos[8]);
-            usuario.setEstado(EstadoUsuario.valueOf(campos[9]));
-            resultado.add(usuario);
+            resultado.add(parsearLinea(linea));
         }
         return resultado;
     }
 
     @Override
     public void guardar(Usuario usuario) {
-        String supervisor = usuario.getSupervisorUsuario() == null ? "" : usuario.getSupervisorUsuario();
+        ManejadorArchivos.agregarLinea(Constantes.ARCHIVO_USUARIOS, construirLinea(usuario));
+    }
 
-        String linea = String.join(Constantes.DELIMITADOR,
+    @Override
+    public void actualizar(Usuario usuarioActualizado) {
+        List<String> lineas = ManejadorArchivos.leerLineas(Constantes.ARCHIVO_USUARIOS);
+        List<String> nuevasLineas = new ArrayList<>();
+        for (String linea : lineas) {
+            Usuario usuarioDeLaLinea = parsearLinea(linea);
+            if (usuarioDeLaLinea.getNombreUsuario().equalsIgnoreCase(usuarioActualizado.getNombreUsuario())) {
+                nuevasLineas.add(construirLinea(usuarioActualizado));
+            } else {
+                nuevasLineas.add(linea);
+            }
+        }
+        ManejadorArchivos.escribirTodasLasLineas(Constantes.ARCHIVO_USUARIOS, nuevasLineas);
+    }
+
+    private Usuario parsearLinea(String linea) {
+        String[] campos = linea.split("\\" + Constantes.DELIMITADOR, -1);
+        Usuario usuario = new Usuario();
+        usuario.setDpi(campos[0]);
+        usuario.setNombreCompleto(campos[1]);
+        usuario.setNombreUsuario(campos[2]);
+        usuario.setArea(campos[3]);
+        usuario.setTurno(TipoTurno.valueOf(campos[4]));
+        usuario.setRol(Rol.valueOf(campos[5]));
+        usuario.setSupervisorUsuario(campos[6]);
+        usuario.setCorreo(campos[7]);
+        usuario.setContrasenaHash(campos[8]);
+        usuario.setEstado(EstadoUsuario.valueOf(campos[9]));
+        return usuario;
+    }
+
+    private String construirLinea(Usuario usuario) {
+        String supervisor = usuario.getSupervisorUsuario() == null ? "" : usuario.getSupervisorUsuario();
+        return String.join(Constantes.DELIMITADOR,
                 usuario.getDpi(),
                 usuario.getNombreCompleto(),
                 usuario.getNombreUsuario(),
@@ -57,7 +79,5 @@ public class UsuarioDAOTexto implements IUsuarioDAO {
                 usuario.getCorreo(),
                 usuario.getContrasenaHash(),
                 usuario.getEstado().name());
-
-        ManejadorArchivos.agregarLinea(Constantes.ARCHIVO_USUARIOS, linea);
     }
 }

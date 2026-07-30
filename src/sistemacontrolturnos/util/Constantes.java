@@ -21,6 +21,12 @@ public class Constantes {
     public static final String ARCHIVO_SOLICITUDES_TURNO = RUTA_DATA + "solicitudes_turno.txt";
     public static final String ARCHIVO_BITACORA = RUTA_DATA + "bitacora.txt";
 
+    // TODO: reemplazar con un correo y contrasena de aplicacion reales antes de usar el envio de correo
+    public static final String SMTP_HOST = "smtp.gmail.com";
+    public static final String SMTP_PUERTO = "587";
+    public static final String SMTP_USUARIO = "TU_CORREO@gmail.com";
+    public static final String SMTP_CONTRASENA = "TU_CONTRASENA_DE_APLICACION";
+
     private Constantes() {
     }
 }
