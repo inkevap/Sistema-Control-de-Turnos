@@ -9,28 +9,31 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import sistemacontrolturnos.util.Constantes;
+import sistemacontrolturnos.util.ConfiguracionApp;
 
 public class CorreoServiceImpl implements ICorreoService {
 
     @Override
     public void enviarCorreo(String destinatario, String asunto, String cuerpo) {
+        String usuarioSmtp = ConfiguracionApp.getSmtpUsuario();
+        String contrasenaSmtp = ConfiguracionApp.getSmtpContrasena();
+
         Properties propiedades = new Properties();
         propiedades.put("mail.smtp.auth", "true");
         propiedades.put("mail.smtp.starttls.enable", "true");
-        propiedades.put("mail.smtp.host", Constantes.SMTP_HOST);
-        propiedades.put("mail.smtp.port", Constantes.SMTP_PUERTO);
+        propiedades.put("mail.smtp.host", ConfiguracionApp.getSmtpHost());
+        propiedades.put("mail.smtp.port", ConfiguracionApp.getSmtpPuerto());
 
         Session sesion = Session.getInstance(propiedades, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(Constantes.SMTP_USUARIO, Constantes.SMTP_CONTRASENA);
+                return new PasswordAuthentication(usuarioSmtp, contrasenaSmtp);
             }
         });
 
         try {
             Message mensaje = new MimeMessage(sesion);
-            mensaje.setFrom(new InternetAddress(Constantes.SMTP_USUARIO));
+            mensaje.setFrom(new InternetAddress(usuarioSmtp));
             mensaje.setRecipients(Message.RecipientType.TO, InternetAddress.parse(destinatario));
             mensaje.setSubject(asunto);
             mensaje.setText(cuerpo);

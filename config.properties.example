@@ -1,0 +1,4 @@
+smtp.host=smtp.gmail.com
+smtp.puerto=587
+smtp.usuario=TU_CORREO@gmail.com
+smtp.contrasena=TU_CONTRASENA_DE_APLICACION
