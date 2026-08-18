@@ -23,22 +23,22 @@ public class ManejadorArchivos {
     }
 
     public static List<String> leerLineas(String rutaArchivo) {
-        List<String> lineas = new ArrayList<>();
+        List<String> lineas = new ArrayList<>(); // lista en memoria
         File archivo = new File(rutaArchivo);
         if (!archivo.exists()) {
-            return lineas;
+            return lineas; // devuelve un array vacio
         }
-        try (Scanner scanner = new Scanner(archivo, "UTF-8")) {
-            while (scanner.hasNextLine()) {
+        try (Scanner scanner = new Scanner(archivo, "UTF-8")) { // trae se lee el archivo
+            while (scanner.hasNextLine()) { // se crea un bucle para leer todas las lineas
                 String linea = scanner.nextLine();
-                if (!linea.trim().isEmpty()) {
-                    lineas.add(linea);
+                if (!linea.trim().isEmpty()) { // se sanitiza las lineas
+                    lineas.add(linea); // se concatena la linea a la lista en memoria
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo: " + rutaArchivo, e);
+            throw new RuntimeException("Error al leer el archivo: " + rutaArchivo, e); // se devuelve un error si hubo un error
         }
-        return lineas;
+        return lineas; // si no hubo error se devuelve la lista de lineas
     }
 
     public static void agregarLinea(String rutaArchivo, String linea) {
@@ -61,18 +61,18 @@ public class ManejadorArchivos {
         }
     }
 
-    private static void crearArchivoSiNoExiste(String rutaArchivo) {
+    private static void crearArchivoSiNoExiste(String rutaArchivo) { //si el archivo no existe
         try {
-            File archivo = new File(rutaArchivo);
-            File carpetaPadre = archivo.getParentFile();
-            if (carpetaPadre != null && !carpetaPadre.exists()) {
-                carpetaPadre.mkdirs();
+            File archivo = new File(rutaArchivo); 
+            File carpetaPadre = archivo.getParentFile(); // verifica si existe la carpeta donde van los archivos
+            if (carpetaPadre != null && !carpetaPadre.exists()) { 
+                carpetaPadre.mkdirs(); //si no existe se crea la carpeta
             }
             if (!archivo.exists()) {
-                archivo.createNewFile();
+                archivo.createNewFile(); // se verifica si el archivo no existe, si no existe se crea
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error al crear el archivo: " + rutaArchivo, e);
+            throw new RuntimeException("Error al crear el archivo: " + rutaArchivo, e); // si hay algun error gestionando los archivos se tira el error
         }
     }
 }
