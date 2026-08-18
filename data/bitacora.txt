@@ -1,0 +1,9 @@
+1|inkevap|Se registro el empleado inkevap|2026-08-01T07:19:46.263
+2|admin|Se asigno el rol EMPLEADO al usuario admin|2026-08-01T07:20:15.949
+3|admin|Se asigno el rol ADMIN_AREA al usuario admin|2026-08-01T07:20:23.193
+4|admin|Se elimino el rol del usuario admin (revertido a EMPLEADO)|2026-08-01T07:20:29.712
+5|admin|Registro marcaje: ENTRADA|2026-08-01T07:43:43.946
+6|admin|Registro marcaje: DESCANSO_1|2026-08-01T07:43:47.024
+7|admin|Registro marcaje: DESCANSO_2|2026-08-01T07:43:55.596
+8|admin|Registro marcaje: SALIDA|2026-08-01T07:43:57.654
+9|wendy|Se elimino el rol del usuario wendy (revertido a EMPLEADO)|2026-08-01T09:08:28.946
