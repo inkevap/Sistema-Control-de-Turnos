@@ -41,8 +41,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public void registrar(UsuarioDTO usuarioDTO) {
-        if (usuarioDAO.buscarPorUsuario(usuarioDTO.getNombreUsuario()) != null) {
-            throw new IllegalStateException("El usuario ya existe");
+        if (usuarioDAO.existeUsuarioDuplicado(
+                usuarioDTO.getNombreCompleto(),
+                usuarioDTO.getNombreUsuario(),
+                usuarioDTO.getDpi())) {
+            throw new IllegalStateException("Error: Ha ocurrido un error al registrar el empleado");
         }
 
         Usuario usuario = new Usuario();
@@ -64,11 +67,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public List<Usuario> buscar(String filtroUsuario, String filtroArea) {
         List<Usuario> resultado = new ArrayList<>();
+        
         for (Usuario usuario : usuarioDAO.listarTodos()) {
+            //filtros de busqueda
+            //Primer filtro por nombre de usuario
             boolean coincideUsuario = filtroUsuario == null || filtroUsuario.isEmpty()
                     || usuario.getNombreUsuario().toLowerCase().contains(filtroUsuario.toLowerCase());
+            //Segundo filtro por area
             boolean coincideArea = filtroArea == null || filtroArea.isEmpty()
                     || usuario.getArea().toLowerCase().contains(filtroArea.toLowerCase());
+            //Si el usuario coincide se agrega a la lista y se devuelve
             if (coincideUsuario && coincideArea) {
                 resultado.add(usuario);
             }
@@ -82,13 +90,15 @@ public class UsuarioServiceImpl implements IUsuarioService {
         if (usuario == null) {
             throw new IllegalStateException("El usuario no existe");
         }
-
+        
         usuario.setEstado(EstadoUsuario.INACTIVO);
         usuarioDAO.actualizar(usuario);
 
+        // se envia el correo
         correoService.enviarCorreo(usuario.getCorreo(), "Notificacion de inactivacion",
                 "Hola " + usuario.getNombreCompleto() + ",\n\nTu cuenta ha sido inactivada.\nMotivo: " + motivo);
-
+        
+        //se guarda en la bitacora quien hizo el cambio
         bitacoraService.registrar(nombreUsuario, "Se inactivo el usuario " + nombreUsuario + " (motivo: " + motivo + ")");
     }
 
@@ -109,8 +119,9 @@ public class UsuarioServiceImpl implements IUsuarioService {
         if (usuario == null) {
             throw new IllegalStateException("El usuario no existe");
         }
-        // La entidad Usuario modela un solo rol (no una lista), asi que "eliminar"
-        // revierte al rol base EMPLEADO en vez de dejar al usuario sin ningun rol.
+        /* La entidad Usuario modela un solo rol (no una lista), asi que "eliminar"
+         revierte al rol base EMPLEADO en vez de dejar al usuario sin ningun rol.
+         */
         usuario.setRol(Rol.EMPLEADO);
         usuarioDAO.actualizar(usuario);
         bitacoraService.registrar(nombreUsuario, "Se elimino el rol del usuario " + nombreUsuario + " (revertido a EMPLEADO)");

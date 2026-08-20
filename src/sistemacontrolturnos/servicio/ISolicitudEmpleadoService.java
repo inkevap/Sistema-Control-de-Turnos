@@ -7,7 +7,9 @@ public interface ISolicitudEmpleadoService {
 
     List<SolicitudGestionEmpleado> listarPendientesRRHH();
 
-    void aprobarPorRRHH(int idSolicitud);
+    List<SolicitudGestionEmpleado> listarResueltas();
 
-    void rechazarPorRRHH(int idSolicitud);
+    void aprobarPorRRHH(int idSolicitud, String nombreUsuarioAdmin);
+
+    void rechazarPorRRHH(int idSolicitud, String nombreUsuarioAdmin);
 }

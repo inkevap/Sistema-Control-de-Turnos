@@ -20,6 +20,22 @@ public class UsuarioDAOTexto implements IUsuarioDAO {
         }
         return null;
     }
+    
+    @Override
+    public boolean existeUsuarioDuplicado(String nombreCompleto, String nombreUsuario, String dpi) {
+        for (Usuario usuario : listarTodos()) {
+            if (usuario.getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
+                return true;
+            }
+            if (usuario.getDpi().equalsIgnoreCase(dpi)) {
+                return true;
+            }
+            if (usuario.getNombreCompleto().equalsIgnoreCase(nombreCompleto)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public List<Usuario> listarTodos() {

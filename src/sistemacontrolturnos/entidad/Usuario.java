@@ -121,10 +121,13 @@ public class Usuario {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.dpi);
-        hash = 89 * hash + Objects.hashCode(this.nombreUsuario);
-        return hash;
+        // El equals() considera "iguales" a dos usuarios si comparten CUALQUIERA
+        // de los 3 campos (nombreCompleto, dpi o nombreUsuario), no los 3 a la vez.
+        // Por eso el hashCode no puede combinar los 3 campos (dos objetos "iguales"
+        // por un solo campo compartido tendrian hashes distintos y romperian el
+        // contrato de hashCode/equals). Se usa un valor constante: mas lento en
+        // HashMap/HashSet, pero siempre consistente con equals().
+        return 1;
     }
 
     @Override
@@ -139,12 +142,15 @@ public class Usuario {
             return false;
         }
         final Usuario other = (Usuario) obj;
-        if (!Objects.equals(this.dpi, other.dpi)) {
-            return false;
+        if (this.nombreCompleto != null && Objects.equals(this.nombreCompleto, other.nombreCompleto)) {
+            return true;
         }
-        if (!Objects.equals(this.nombreUsuario, other.nombreUsuario)) {
-            return false;
+        if (this.dpi != null && Objects.equals(this.dpi, other.dpi)) {
+            return true;
         }
-        return true;
+        if (this.nombreUsuario != null && Objects.equals(this.nombreUsuario, other.nombreUsuario)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -8,10 +8,8 @@ import javax.swing.JPanel;
 import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
 import sistemacontrolturnos.presentacion.marcaje.MarcajeView;
-import sistemacontrolturnos.presentacion.usuario.AgregarEmpleadoView;
-import sistemacontrolturnos.presentacion.usuario.ConsultarUsuarioView;
 import sistemacontrolturnos.presentacion.usuario.GestionRolesView;
-import sistemacontrolturnos.presentacion.usuario.SolicitudesRRHHView;
+import sistemacontrolturnos.presentacion.usuario.MantenimientoUsuarioView;
 
 public class MenuPrincipalView extends JFrame {
 
@@ -36,21 +34,14 @@ public class MenuPrincipalView extends JFrame {
         Rol rol = usuarioActivo.getRol();
 
         if (rol == Rol.ADMIN_RRHH) {
-            JButton botonAgregar = new JButton("Agregar Empleado");
-            botonAgregar.addActionListener(evento -> new AgregarEmpleadoView().setVisible(true));
-            panel.add(botonAgregar);
-
-            JButton botonConsultar = new JButton("Consultar Usuario");
-            botonConsultar.addActionListener(evento -> new ConsultarUsuarioView().setVisible(true));
-            panel.add(botonConsultar);
+            JButton botonMantenimiento = new JButton("Mantenimiento de usuario");
+            botonMantenimiento.addActionListener(evento ->
+                    new MantenimientoUsuarioView(usuarioActivo.getNombreUsuario()).setVisible(true));
+            panel.add(botonMantenimiento);
 
             JButton botonRoles = new JButton("Gestion de Roles");
             botonRoles.addActionListener(evento -> new GestionRolesView().setVisible(true));
             panel.add(botonRoles);
-
-            JButton botonSolicitudes = new JButton("Solicitudes RRHH");
-            botonSolicitudes.addActionListener(evento -> new SolicitudesRRHHView().setVisible(true));
-            panel.add(botonSolicitudes);
         }
         if (rol == Rol.ADMIN_AREA) {
             panel.add(new JButton("Asignacion de Turnos"));

@@ -7,3 +7,18 @@
 7|admin|Registro marcaje: DESCANSO_2|2026-08-01T07:43:55.596
 8|admin|Registro marcaje: SALIDA|2026-08-01T07:43:57.654
 9|wendy|Se elimino el rol del usuario wendy (revertido a EMPLEADO)|2026-08-01T09:08:28.946
+10|liebbergott|Se registro el empleado liebbergott|2026-08-17T22:35:51.127
+11|liebbergott|Se registro el empleado liebbergott|2026-08-17T23:08:28.317
+12|liebbergott|Se registro el empleado liebbergott|2026-08-17T23:14:04.97
+13|liebbergott|Se inactivo el usuario liebbergott (motivo: Otros)|2026-08-17T23:36:18.636
+14|liebbergott|Se inactivo el usuario liebbergott (motivo: Citas IGSS)|2026-08-17T23:36:30.101
+15|liebbergott|Se inactivo el usuario liebbergott (motivo: Suspension Laboral)|2026-08-17T23:36:36.993
+16|liebbergott|Se inactivo el usuario liebbergott (motivo: Permiso Personal)|2026-08-17T23:52:32.024
+17|liebbergott|Se inactivo el usuario liebbergott (motivo: Permiso Personal)|2026-08-17T23:54:53.637
+18|liebbergott|Se inactivo el usuario liebbergott (motivo: Permiso Personal)|2026-08-17T23:58:14.92
+19|liebbergott|Se elimino el rol del usuario liebbergott (revertido a EMPLEADO)|2026-08-20T17:11:21.091
+20|liebbergott|Se asigno el rol ADMIN_AREA al usuario liebbergott|2026-08-20T17:11:30.683
+21|liebbergott|Se asigno el rol ADMIN_RRHH al usuario liebbergott|2026-08-20T17:11:37.656
+22|liebbergott|Se elimino el rol del usuario liebbergott (revertido a EMPLEADO)|2026-08-20T17:11:41.969
+23|admin|Se asigno el rol ADMIN_AREA al usuario admin|2026-08-20T17:12:12.767
+24|inkevap|RRHH aprobo la solicitud #1 del usuario admin|2026-08-20T17:21:54.495

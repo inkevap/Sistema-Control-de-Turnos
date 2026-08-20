@@ -63,10 +63,12 @@ public class SolicitudEmpleadoDAOTexto implements ISolicitudEmpleadoDAO {
         solicitud.setFechaFin(LocalDate.parse(campos[4]));
         solicitud.setMotivo(campos[5]);
         solicitud.setEstado(EstadoSolicitud.valueOf(campos[6]));
+        solicitud.setProcesadoPor(campos.length > 7 ? campos[7] : "");
         return solicitud;
     }
 
     private String construirLinea(SolicitudGestionEmpleado solicitud) {
+        String procesadoPor = solicitud.getProcesadoPor() == null ? "" : solicitud.getProcesadoPor();
         return String.join(Constantes.DELIMITADOR,
                 String.valueOf(solicitud.getIdSolicitud()),
                 solicitud.getNombreUsuarioEmpleado(),
@@ -74,6 +76,7 @@ public class SolicitudEmpleadoDAOTexto implements ISolicitudEmpleadoDAO {
                 solicitud.getFechaInicio().toString(),
                 solicitud.getFechaFin().toString(),
                 solicitud.getMotivo(),
-                solicitud.getEstado().name());
+                solicitud.getEstado().name(),
+                procesadoPor);
     }
 }

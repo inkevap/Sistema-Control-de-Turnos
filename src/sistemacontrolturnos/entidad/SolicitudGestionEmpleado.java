@@ -11,6 +11,7 @@ public class SolicitudGestionEmpleado {
     private LocalDate fechaFin;
     private String motivo;
     private EstadoSolicitud estado;
+    private String procesadoPor;
 
     public int getIdSolicitud() {
         return idSolicitud;
@@ -66,5 +67,13 @@ public class SolicitudGestionEmpleado {
 
     public void setEstado(EstadoSolicitud estado) {
         this.estado = estado;
+    }
+
+    public String getProcesadoPor() {
+        return procesadoPor;
+    }
+
+    public void setProcesadoPor(String procesadoPor) {
+        this.procesadoPor = procesadoPor;
     }
 }

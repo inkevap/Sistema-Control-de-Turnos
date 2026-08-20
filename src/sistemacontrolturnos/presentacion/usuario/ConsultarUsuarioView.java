@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import sistemacontrolturnos.controlador.UsuarioController;
+import sistemacontrolturnos.entidad.EstadoUsuario;
 import sistemacontrolturnos.entidad.Usuario;
 
 public class ConsultarUsuarioView extends JFrame {
@@ -74,9 +75,11 @@ public class ConsultarUsuarioView extends JFrame {
     }
 
     private void buscar() {
+        // Aqui se buscan los usuarios por los filtros
         modeloTabla.setRowCount(0);
         List<Usuario> usuarios = controlador.consultarUsuarios(
                 campoFiltroUsuario.getText().trim(), campoFiltroArea.getText().trim());
+        // Aqui los agregamos a la tabla, uno por uno.
         for (Usuario usuario : usuarios) {
             modeloTabla.addRow(new Object[]{usuario.getNombreUsuario(), usuario.getArea(), usuario.getEstado()});
         }
@@ -89,6 +92,14 @@ public class ConsultarUsuarioView extends JFrame {
             return;
         }
         String nombreUsuario = (String) modeloTabla.getValueAt(filaSeleccionada, 0);
+        Object estado = modeloTabla.getValueAt(filaSeleccionada, 2);
+
+        //solo se puede inactivar a un usuario que este activo
+        if (!EstadoUsuario.ACTIVO.equals(estado)) {
+            String inactivo = "El usuario '" + nombreUsuario + "' ya esta inactivo";
+            JOptionPane.showMessageDialog(this, inactivo);
+            return;
+        }
 
         String motivo = (String) JOptionPane.showInputDialog(this, "Motivo de inactivacion:",
                 "Inactivar Usuario", JOptionPane.QUESTION_MESSAGE, null,
@@ -100,7 +111,8 @@ public class ConsultarUsuarioView extends JFrame {
         }
 
         controlador.inactivarUsuario(nombreUsuario, motivo);
-        JOptionPane.showMessageDialog(this, "Usuario inactivado correctamente");
+        String completado = "El usuario '" + nombreUsuario + "' ha sido inactivado correctamente";
+        JOptionPane.showMessageDialog(this, completado);
         buscar();
     }
 }
