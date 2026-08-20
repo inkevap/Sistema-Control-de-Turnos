@@ -35,23 +35,37 @@ public class SolicitudEmpleadoServiceImpl implements ISolicitudEmpleadoService {
     }
 
     @Override
-    public void aprobarPorRRHH(int idSolicitud) {
-        SolicitudGestionEmpleado solicitud = obtenerPendienteORechazarDuplicado(idSolicitud);
-        solicitud.setEstado(EstadoSolicitud.APROBADA);
-        solicitudDAO.actualizar(solicitud);
-        notificar(solicitud, "APROBADA");
-        bitacoraService.registrar(solicitud.getNombreUsuarioEmpleado(),
-                "RRHH aprobo la solicitud #" + idSolicitud);
+    public List<SolicitudGestionEmpleado> listarResueltas() {
+        List<SolicitudGestionEmpleado> resultado = new ArrayList<>();
+        for (SolicitudGestionEmpleado solicitud : solicitudDAO.listarTodos()) {
+            if (solicitud.getEstado() == EstadoSolicitud.APROBADA
+                    || solicitud.getEstado() == EstadoSolicitud.RECHAZADA) {
+                resultado.add(solicitud);
+            }
+        }
+        return resultado;
     }
 
     @Override
-    public void rechazarPorRRHH(int idSolicitud) {
+    public void aprobarPorRRHH(int idSolicitud, String nombreUsuarioAdmin) {
+        SolicitudGestionEmpleado solicitud = obtenerPendienteORechazarDuplicado(idSolicitud);
+        solicitud.setEstado(EstadoSolicitud.APROBADA);
+        solicitud.setProcesadoPor(nombreUsuarioAdmin);
+        solicitudDAO.actualizar(solicitud);
+        notificar(solicitud, "APROBADA");
+        bitacoraService.registrar(nombreUsuarioAdmin,
+                "RRHH aprobo la solicitud #" + idSolicitud + " del usuario " + solicitud.getNombreUsuarioEmpleado());
+    }
+
+    @Override
+    public void rechazarPorRRHH(int idSolicitud, String nombreUsuarioAdmin) {
         SolicitudGestionEmpleado solicitud = obtenerPendienteORechazarDuplicado(idSolicitud);
         solicitud.setEstado(EstadoSolicitud.RECHAZADA);
+        solicitud.setProcesadoPor(nombreUsuarioAdmin);
         solicitudDAO.actualizar(solicitud);
         notificar(solicitud, "RECHAZADA");
-        bitacoraService.registrar(solicitud.getNombreUsuarioEmpleado(),
-                "RRHH rechazo la solicitud #" + idSolicitud);
+        bitacoraService.registrar(nombreUsuarioAdmin,
+                "RRHH rechazo la solicitud #" + idSolicitud + " del usuario " + solicitud.getNombreUsuarioEmpleado());
     }
 
     private SolicitudGestionEmpleado obtenerPendienteORechazarDuplicado(int idSolicitud) {

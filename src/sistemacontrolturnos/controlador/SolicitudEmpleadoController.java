@@ -32,11 +32,15 @@ public class SolicitudEmpleadoController {
         return solicitudService.listarPendientesRRHH();
     }
 
-    public void aprobar(int idSolicitud) {
-        solicitudService.aprobarPorRRHH(idSolicitud);
+    public List<SolicitudGestionEmpleado> listarResueltas() {
+        return solicitudService.listarResueltas();
     }
 
-    public void rechazar(int idSolicitud) {
-        solicitudService.rechazarPorRRHH(idSolicitud);
+    public void aprobar(int idSolicitud, String nombreUsuarioAdmin) {
+        solicitudService.aprobarPorRRHH(idSolicitud, nombreUsuarioAdmin);
+    }
+
+    public void rechazar(int idSolicitud, String nombreUsuarioAdmin) {
+        solicitudService.rechazarPorRRHH(idSolicitud, nombreUsuarioAdmin);
     }
 }
