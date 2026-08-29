@@ -20,6 +20,7 @@ public class Constantes {
     public static final String ARCHIVO_SOLICITUDES_EMPLEADO = RUTA_DATA + "solicitudes_empleado.txt";
     public static final String ARCHIVO_SOLICITUDES_TURNO = RUTA_DATA + "solicitudes_turno.txt";
     public static final String ARCHIVO_BITACORA = RUTA_DATA + "bitacora.txt";
+    public static final String ARCHIVO_LOG = RUTA_DATA + "log.txt";
 
     private Constantes() {
     }

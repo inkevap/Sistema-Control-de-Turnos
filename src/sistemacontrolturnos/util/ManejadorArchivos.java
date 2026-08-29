@@ -36,6 +36,7 @@ public class ManejadorArchivos {
                 }
             }
         } catch (IOException e) {
+            RegistroErrores.registrar("ManejadorArchivos.leerLineas: " + rutaArchivo, e);
             throw new RuntimeException("Error al leer el archivo: " + rutaArchivo, e); // se devuelve un error si hubo un error
         }
         return lineas; // si no hubo error se devuelve la lista de lineas
@@ -46,6 +47,7 @@ public class ManejadorArchivos {
         try (PrintStream out = new PrintStream(new FileOutputStream(rutaArchivo, true), true, "UTF-8")) {
             out.println(linea);
         } catch (IOException e) {
+            RegistroErrores.registrar("ManejadorArchivos.agregarLinea: " + rutaArchivo, e);
             throw new RuntimeException("Error al escribir en el archivo: " + rutaArchivo, e);
         }
     }
@@ -57,6 +59,7 @@ public class ManejadorArchivos {
                 out.println(linea);
             }
         } catch (IOException e) {
+            RegistroErrores.registrar("ManejadorArchivos.escribirTodasLasLineas: " + rutaArchivo, e);
             throw new RuntimeException("Error al escribir en el archivo: " + rutaArchivo, e);
         }
     }
@@ -72,6 +75,7 @@ public class ManejadorArchivos {
                 archivo.createNewFile(); // se verifica si el archivo no existe, si no existe se crea
             }
         } catch (IOException e) {
+            RegistroErrores.registrar("ManejadorArchivos.crearArchivoSiNoExiste: " + rutaArchivo, e);
             throw new RuntimeException("Error al crear el archivo: " + rutaArchivo, e); // si hay algun error gestionando los archivos se tira el error
         }
     }

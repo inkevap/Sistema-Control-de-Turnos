@@ -11,6 +11,7 @@ import sistemacontrolturnos.dto.UsuarioDTO;
 import sistemacontrolturnos.entidad.EstadoUsuario;
 import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
+import sistemacontrolturnos.util.RegistroErrores;
 
 public class UsuarioServiceImpl implements IUsuarioService {
 
@@ -41,10 +42,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public void registrar(UsuarioDTO usuarioDTO) {
-        if (usuarioDAO.existeUsuarioDuplicado(
-                usuarioDTO.getNombreCompleto(),
-                usuarioDTO.getNombreUsuario(),
-                usuarioDTO.getDpi())) {
+        // Validacion de duplicados en la capa de servicio (regla de negocio):
+        // se considera duplicado si coincide el DPI o el nombre de usuario con
+        // algun usuario ya existente. El nombre completo NO se valida (dos
+        // empleados pueden llamarse igual).
+        if (existeDuplicado(usuarioDTO.getDpi(), usuarioDTO.getNombreUsuario())) {
             throw new IllegalStateException("Error: Ha ocurrido un error al registrar el empleado");
         }
 
@@ -62,6 +64,19 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
         usuarioDAO.guardar(usuario);
         bitacoraService.registrar(usuarioDTO.getNombreUsuario(), "Se registro el empleado " + usuarioDTO.getNombreUsuario());
+    }
+
+    // Recorre los usuarios existentes comparando DPI y nombre de usuario (sin
+    // distinguir mayusculas/minusculas). Vive en el servicio porque es una regla
+    // de negocio, no una responsabilidad de acceso a datos.
+    private boolean existeDuplicado(String dpi, String nombreUsuario) {
+        for (Usuario existente : usuarioDAO.listarTodos()) {
+            if (existente.getDpi().equalsIgnoreCase(dpi)
+                    || existente.getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -120,12 +135,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
         if (usuario == null) {
             throw new IllegalStateException("El usuario no existe");
         }
-        /* La entidad Usuario modela un solo rol (no una lista), asi que "eliminar"
-         revierte al rol base EMPLEADO en vez de dejar al usuario sin ningun rol.
+        /* La entidad Usuario modela un solo rol (no una lista). Al "eliminar" el
+         rol se deja el rol vacio SIN_ROL (patron Null Object) en lugar de null,
+         de modo que el usuario queda sin permisos hasta que se le asigne otro rol.
          */
-        usuario.setRol(Rol.EMPLEADO);
+        usuario.setRol(Rol.SIN_ROL);
         usuarioDAO.actualizar(usuario);
-        bitacoraService.registrar(nombreUsuario, "Se elimino el rol del usuario " + nombreUsuario + " (revertido a EMPLEADO)");
+        bitacoraService.registrar(nombreUsuario, "Se elimino el rol del usuario " + nombreUsuario + " (queda SIN_ROL)");
     }
 
     
@@ -149,6 +165,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             }
             return sb.toString(); // una vez todos los bytes se conviertieron a hexadecimal se devuelve el resultado
         } catch (NoSuchAlgorithmException e) { // No deberia dar error, pero en caso de que si aqui se gestiona ese error
+            RegistroErrores.registrar("UsuarioServiceImpl.hashear", e);
             throw new RuntimeException("Error al generar el hash", e);
         }
     }

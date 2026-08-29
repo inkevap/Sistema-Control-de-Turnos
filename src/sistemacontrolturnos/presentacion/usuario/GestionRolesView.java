@@ -51,7 +51,13 @@ public class GestionRolesView extends JFrame {
         gbc.gridy = 1;
         add(new JLabel("Rol:"), gbc);
 
-        comboRol = new JComboBox<>(Rol.values());
+        comboRol = new JComboBox<>();
+        // SIN_ROL no se asigna desde aqui; se obtiene con el boton "Eliminar".
+        for (Rol rol : Rol.values()) {
+            if (rol != Rol.SIN_ROL) {
+                comboRol.addItem(rol);
+            }
+        }
         gbc.gridx = 1;
         add(comboRol, gbc);
 

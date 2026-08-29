@@ -57,7 +57,13 @@ public class AgregarEmpleadoView extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = filaActual;
         add(new JLabel("Turno:"), gbc);
-        comboTurno = new JComboBox<>(TipoTurno.values());
+        comboTurno = new JComboBox<>();
+        // El turno NOCTURNO no se ofrece al registrar (no aplica para la empresa).
+        for (TipoTurno turno : TipoTurno.values()) {
+            if (turno != TipoTurno.NOCTURNO) {
+                comboTurno.addItem(turno);
+            }
+        }
         gbc.gridx = 1;
         add(comboTurno, gbc);
         filaActual++;
@@ -65,7 +71,13 @@ public class AgregarEmpleadoView extends JFrame {
         gbc.gridx = 0;
         gbc.gridy = filaActual;
         add(new JLabel("Rol:"), gbc);
-        comboRol = new JComboBox<>(Rol.values());
+        comboRol = new JComboBox<>();
+        // SIN_ROL no es asignable manualmente: es el estado que deja "Eliminar rol".
+        for (Rol rol : Rol.values()) {
+            if (rol != Rol.SIN_ROL) {
+                comboRol.addItem(rol);
+            }
+        }
         gbc.gridx = 1;
         add(comboRol, gbc);
         filaActual++;
@@ -75,9 +87,13 @@ public class AgregarEmpleadoView extends JFrame {
         add(new JLabel("Supervisor:"), gbc);
         comboSupervisor = new JComboBox<>();
         comboSupervisor.addItem("");
+        // El supervisor (jefe inmediato) solo puede ser un usuario con rol de
+        // supervision: ADMIN_AREA o ADMIN_RRHH.
         List<Usuario> usuarios = controlador.consultarUsuarios(null, null);
         for (Usuario usuario : usuarios) {
-            comboSupervisor.addItem(usuario.getNombreUsuario());
+            if (usuario.getRol() == Rol.ADMIN_AREA || usuario.getRol() == Rol.ADMIN_RRHH) {
+                comboSupervisor.addItem(usuario.getNombreUsuario());
+            }
         }
         gbc.gridx = 1;
         add(comboSupervisor, gbc);
