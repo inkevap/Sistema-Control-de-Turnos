@@ -55,10 +55,6 @@ public class MenuPrincipalView extends JFrame {
             panel.add(new JButton("Gestiones del Empleado"));
         }
 
-        JButton botonSalir = new JButton("Salir");
-        botonSalir.addActionListener(evento -> System.exit(0));
-        panel.add(botonSalir);
-
         add(panel);
     }
 }

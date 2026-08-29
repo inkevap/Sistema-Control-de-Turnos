@@ -7,14 +7,14 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 ### Flujo Normal Basico
 - [x] Login con usuario y contrasena
 - [x] Menu con las opciones "Mantenimiento de usuario" y "Gestion de Roles"
-- [ ] ==Quitar el boton salir==
+- [x] ==Quitar el boton salir==
 - [x] Al entrar a "Mantenimiento de usuario": submenu con Agregar Empleado, Consultar Usuario, Solicitudes, Boton Regresar
 - [x] Agregar Empleado: formulario con DPI, Nombre Completo, Usuario, Area, Turno (Matutino/Vespertino/Diurno), Rol (Empleado/Admin Area/Admin RHH), Supervisor, Correo, Contrasena, Boton Registrar, Boton Regresar
-- [ ] ==Limitar el combobox a solo supervisores==
-- [ ] ==Quitar turno nocturno==
+- [x] ==Limitar el combobox a solo supervisores==
+- [x] ==Quitar turno nocturno==
 - [x] Validar que el usuario no este duplicado antes de guardar
 - [x] Preguntar "Verificar la entrada duplicada es parte del DAO o es Logica de negocio (Capa de servicio)?"
-- [ ] ==Solo el DPI debe ser la verificacion de duplicado == (Cambie a DPI y Nombre de Usuario)
+- [x] ==Solo el DPI debe ser la verificacion de duplicado == (Cambie a DPI y Nombre de Usuario)
 - [x] Guardar el empleado creado
 - [x] Mensaje de exito "se creo correctamente"
 - [x] Guardar en bitacora la accion de agregar
@@ -29,7 +29,7 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Buscar por el filtro
 - [x] Mostrar Usuario, Area, Estado (Activo/Inactivo), Acciones
 - [x] Preguntar "Acciones es solo inactivar o tambien modificar informacion del usuario? en el CU1 solo se menciona inactivar"
-- [ ] ==Cuando se elimina el Rol se debe quedar sin rol==
+- [x] ==Cuando se elimina el Rol se debe quedar sin rol==
 - [x] Boton Regresar
 
 ### FA03 - Estado Inactivo
@@ -54,7 +54,7 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Al Aprobar: validar que la solicitud no haya sido aprobada previamente por otro Admin RHH
 - [x] Notificar por correo la confirmacion de aprobacion al empleado
 - [x] Boton Regresar
-- [ ] ==Arreglar bug de que se aceptan todos de golpe cuando hay multiples solicitudes.==
+- [x] ==Arreglar bug de que se aceptan todos de golpe cuando hay multiples solicitudes.==
 
 ### FA07 - Boton Rechazar
 - [x] Validar que la solicitud no haya sido aprobada previamente por otro Admin RHH
@@ -80,7 +80,7 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 ### FA10 - Solicitud ya aprobada
 - [x] Validar que la solicitud ya fue aprobada previamente
 - [x] Bloquear la accion de aprobacion
-- [ ] Mensaje "Esta solicitud ya esta siendo procesada por otro administrador RRHH"
+- [x] Mensaje "Esta solicitud ya esta siendo procesada por otro administrador RRHH"
 - [x] Preguntar "Si la solicitud ya fue aprobada pasa a solicitud respondida, debo mostrar este mensaje aun?"NO 
 
 ### Postcondiciones

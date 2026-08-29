@@ -10,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import sistemacontrolturnos.util.ConfiguracionApp;
+import sistemacontrolturnos.util.RegistroErrores;
 
 public class CorreoServiceImpl implements ICorreoService {
 
@@ -54,6 +55,7 @@ public class CorreoServiceImpl implements ICorreoService {
             // No se detiene el flujo de negocio si el correo falla (ej. credenciales de prueba sin configurar).
             // porque el mr Inge no definio un Flujo para esto, pero pregunta Kev, no seas mamon.
             System.err.println("No se pudo enviar el correo a " + destinatario + ": " + e.getMessage());
+            RegistroErrores.registrar("CorreoServiceImpl.enviarCorreo -> " + destinatario, e);
         }
     }
 }

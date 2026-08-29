@@ -21,6 +21,7 @@ public class ConfiguracionApp {
             // Esto deberia ser una view ?
             System.err.println("No se encontro '" + ARCHIVO_CONFIG + "'. Copia 'config.properties.example' "
                     + "a 'config.properties' en la raiz del proyecto y completa tus credenciales de correo.");
+            RegistroErrores.registrar("ConfiguracionApp: no se pudo cargar " + ARCHIVO_CONFIG, e);
         }
     }
 

@@ -36,3 +36,6 @@
 36|adminRRH|RRHH aprobo la solicitud #1 del usuario admin|2026-08-22T07:56:47.694
 37|adminRRH|RRHH aprobo la solicitud #2 del usuario wendy|2026-08-28T22:19:38
 38|adminRRH|RRHH aprobo la solicitud #1 del usuario admin|2026-08-28T22:19:59.555
+39|adminRRH|RRHH aprobo la solicitud #6 del usuario Ejem1|2026-08-28T22:39:47.054
+40|Ejem1|Se elimino el rol del usuario Ejem1 (queda SIN_ROL)|2026-08-28T22:41:02.11
+41|Ejem1|Se asigno el rol EMPLEADO al usuario Ejem1|2026-08-28T22:41:05.209
