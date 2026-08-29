@@ -22,6 +22,8 @@ public class UsuarioDAOTexto implements IUsuarioDAO {
     }
     
     @Override
+//  limitamos el duplicados par       
+//  public boolean existeUsuarioDuplicado(String nombreCompleto, String nombreUsuario, String dpi) {
     public boolean existeUsuarioDuplicado(String nombreCompleto, String nombreUsuario, String dpi) {
         for (Usuario usuario : listarTodos()) {
             if (usuario.getNombreUsuario().equalsIgnoreCase(nombreUsuario)) {
@@ -83,6 +85,8 @@ public class UsuarioDAOTexto implements IUsuarioDAO {
     }
 
     private String construirLinea(Usuario usuario) {
+        // Usamos un operador ternario para evitar un error, si es nulo, lo ponemos como 
+        // un valor vacio manualmente
         String supervisor = usuario.getSupervisorUsuario() == null ? "" : usuario.getSupervisorUsuario();
         return String.join(Constantes.DELIMITADOR,
                 usuario.getDpi(),

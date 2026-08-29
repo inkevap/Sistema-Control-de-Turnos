@@ -14,7 +14,9 @@ public class MarcajeDAOTexto implements IMarcajeDAO {
     @Override
     public void guardar(Marcaje marcaje) {
         List<String> lineas = ManejadorArchivos.leerLineas(Constantes.ARCHIVO_MARCAJES);
-        int siguienteId = lineas.size() + 1;
+        // esto va a generar ID duplicado si se borra una linea, porque solo esta contando las 
+        // lineas existentes y le suma uno
+        int siguienteId = lineas.size() + 1; 
         marcaje.setIdMarcaje(siguienteId);
         ManejadorArchivos.agregarLinea(Constantes.ARCHIVO_MARCAJES, construirLinea(marcaje));
     }
@@ -41,6 +43,11 @@ public class MarcajeDAOTexto implements IMarcajeDAO {
     }
 
     private Marcaje parsearLinea(String linea) {
+        // Utilizamos Regex, tomamos en cuenta que \ es un caracter especial que 
+        // utilizamos para referirnos a un caracter de texto y no a su uso especial
+        // en este caso a \\ le concatenamos el delimitador,
+        // Esto con el fin de que el delimitador no sea tomado como un caracter especial
+        // o como OR en el REGEX de split()
         String[] campos = linea.split("\\" + Constantes.DELIMITADOR, -1);
         Marcaje marcaje = new Marcaje();
         marcaje.setIdMarcaje(Integer.parseInt(campos[0]));

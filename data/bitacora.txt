@@ -22,3 +22,17 @@
 22|liebbergott|Se elimino el rol del usuario liebbergott (revertido a EMPLEADO)|2026-08-20T17:11:41.969
 23|admin|Se asigno el rol ADMIN_AREA al usuario admin|2026-08-20T17:12:12.767
 24|inkevap|RRHH aprobo la solicitud #1 del usuario admin|2026-08-20T17:21:54.495
+25|liebbergott|Se inactivo el usuario liebbergott (motivo: Otros)|2026-08-20T18:04:39.565
+26|wendy|Registro marcaje: ENTRADA|2026-08-21T22:24:09.372
+27|wendy|Registro marcaje: DESCANSO_1|2026-08-21T22:24:14.569
+28|wendy|Registro marcaje: DESCANSO_2|2026-08-21T22:24:18.705
+29|wendy|Registro marcaje: SALIDA|2026-08-21T22:24:20.838
+30|wendy|Registro marcaje: ENTRADA|2026-08-21T22:44:07.282
+31|Ejem1|Se registro el empleado Ejem1|2026-08-22T07:39:26.25
+32|wendy|Registro marcaje: ENTRADA|2026-08-22T07:53:16.622
+33|wendy|Registro marcaje: DESCANSO_1|2026-08-22T07:53:20.411
+34|wendy|Registro marcaje: DESCANSO_2|2026-08-22T07:53:23.704
+35|wendy|Registro marcaje: SALIDA|2026-08-22T07:53:25.574
+36|adminRRH|RRHH aprobo la solicitud #1 del usuario admin|2026-08-22T07:56:47.694
+37|adminRRH|RRHH aprobo la solicitud #2 del usuario wendy|2026-08-28T22:19:38
+38|adminRRH|RRHH aprobo la solicitud #1 del usuario admin|2026-08-28T22:19:59.555

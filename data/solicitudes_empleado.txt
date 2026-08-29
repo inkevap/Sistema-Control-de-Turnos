@@ -1,1 +1,2 @@
-1|admin|VACACIONES|2026-08-05|2026-08-10|Vacaciones familiares|PENDIENTE_RRHH|
+1|admin|VACACIONES|2026-08-05|2026-08-10|Vacaciones familiares|APROBADA|adminRRH
+2|wendy|VACACIONES|2026-08-05|2026-08-10|Vacaciones familiares|APROBADA|adminRRH

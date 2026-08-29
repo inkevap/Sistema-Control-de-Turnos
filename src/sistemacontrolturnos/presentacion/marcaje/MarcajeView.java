@@ -1,16 +1,26 @@
 package sistemacontrolturnos.presentacion.marcaje;
 
+import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import sistemacontrolturnos.controlador.MarcajeController;
 import sistemacontrolturnos.entidad.TipoMarcaje;
 
 public class MarcajeView extends JFrame {
 
+    private static final DateTimeFormatter FORMATO_HORA = DateTimeFormatter.ofPattern("HH:mm:ss");
+
     private final MarcajeController controlador;
     private final String nombreUsuario;
+    private final JLabel labelReloj = new JLabel("", SwingConstants.CENTER);
+    private final Timer timerReloj = new Timer(1000, evento -> actualizarReloj()); // funcion para actualizar el reloj
 
     public MarcajeView(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
@@ -25,6 +35,11 @@ public class MarcajeView extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new GridLayout(0, 1, 10, 10));
 
+        labelReloj.setFont(labelReloj.getFont().deriveFont(Font.BOLD, 20f));
+        actualizarReloj();
+        add(labelReloj);
+        timerReloj.start();
+
         agregarBoton("Marcar Entrada", TipoMarcaje.ENTRADA);
         agregarBoton("Marcar Primer Descanso", TipoMarcaje.DESCANSO_1);
         agregarBoton("Marcar Segundo Descanso", TipoMarcaje.DESCANSO_2);
@@ -37,6 +52,16 @@ public class MarcajeView extends JFrame {
         JButton botonRegresar = new JButton("Regresar");
         botonRegresar.addActionListener(evento -> dispose());
         add(botonRegresar);
+    }
+
+    private void actualizarReloj() {
+        labelReloj.setText(LocalTime.now().format(FORMATO_HORA));
+    }
+
+    @Override
+    public void dispose() {
+        timerReloj.stop();
+        super.dispose();
     }
 
     private void agregarBoton(String texto, TipoMarcaje tipo) {

@@ -8,6 +8,7 @@ public class Marcaje {
     private String nombreUsuario;
     private TipoMarcaje tipo;
     private LocalDateTime fechaHora;
+    // Como es un marcaje general, la entrada tardia solo cambia cuando se trata de entrada, no de salida
     private boolean entradaTardia;
 
     public int getIdMarcaje() {

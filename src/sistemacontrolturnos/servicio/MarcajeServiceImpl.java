@@ -11,7 +11,8 @@ import sistemacontrolturnos.entidad.TipoMarcaje;
 
 public class MarcajeServiceImpl implements IMarcajeService {
 
-    private static final LocalTime HORA_LIMITE_ENTRADA = LocalTime.of(8, 0);
+    //Aca definimos por ahora la hora de entrada para determinar la entrada tardia
+    private static final LocalTime HORA_LIMITE_ENTRADA = LocalTime.of(8, 0); 
 
     private final IMarcajeDAO marcajeDAO;
     private final IBitacoraService bitacoraService;
@@ -30,11 +31,13 @@ public class MarcajeServiceImpl implements IMarcajeService {
         if (contieneTipo(marcajesDeHoy, marcajeDTO.getTipo())) {
             throw new IllegalStateException("No puede repetir el mismo marcaje");
         }
-
+        // se guarda el estado actual de los marcajes para hacer la validacion en el switch case
         boolean tieneEntrada = contieneTipo(marcajesDeHoy, TipoMarcaje.ENTRADA);
         boolean tieneDescanso1 = contieneTipo(marcajesDeHoy, TipoMarcaje.DESCANSO_1);
         boolean tieneDescanso2 = contieneTipo(marcajesDeHoy, TipoMarcaje.DESCANSO_2);
 
+        
+        // Se verifica que se hayan hechos los marcajes en orden
         switch (marcajeDTO.getTipo()) {
             case DESCANSO_1:
                 // FA05
@@ -64,6 +67,7 @@ public class MarcajeServiceImpl implements IMarcajeService {
         marcaje.setNombreUsuario(marcajeDTO.getNombreUsuario());
         marcaje.setTipo(marcajeDTO.getTipo());
         marcaje.setFechaHora(ahora);
+        
         // RN01: entrada despues de las 8:00 am se marca como tardia
         marcaje.setEntradaTardia(marcajeDTO.getTipo() == TipoMarcaje.ENTRADA
                 && ahora.toLocalTime().isAfter(HORA_LIMITE_ENTRADA));
@@ -76,7 +80,7 @@ public class MarcajeServiceImpl implements IMarcajeService {
     public List<Marcaje> obtenerMarcajesDelDia(String nombreUsuario) {
         return marcajeDAO.listarPorUsuarioYFecha(nombreUsuario, LocalDate.now());
     }
-
+    // Metodo auxiliar para poder verificar si ya existe un marcaje de cierto tipo
     private boolean contieneTipo(List<Marcaje> marcajes, TipoMarcaje tipo) {
         for (Marcaje marcaje : marcajes) {
             if (marcaje.getTipo() == tipo) {

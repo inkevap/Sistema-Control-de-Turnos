@@ -106,6 +106,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public void agregarRol(String nombreUsuario, Rol nuevoRol) {
         Usuario usuario = usuarioDAO.buscarPorUsuario(nombreUsuario);
         if (usuario == null) {
+            // Esto en teoria no se da por el combo box "EN TEORIA" pero lo pongo por si acaso
             throw new IllegalStateException("El usuario no existe");
         }
         usuario.setRol(nuevoRol);
@@ -127,16 +128,27 @@ public class UsuarioServiceImpl implements IUsuarioService {
         bitacoraService.registrar(nombreUsuario, "Se elimino el rol del usuario " + nombreUsuario + " (revertido a EMPLEADO)");
     }
 
+    
+    // Metodo para crear el hash cifrado en SHA-256, pude haber usado Bcrypt pero soy flojo lo siento
+    // Ya tenia este codigo en algun otro repo
+    // Como funciona? Solo Dios sabe, pero ahorita vemos que pedales
     public static String hashear(String texto) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hashBytes = digest.digest(texto.getBytes(StandardCharsets.UTF_8));
+            // Se devuelve un encriptador de SHA-256
+            MessageDigest digest = MessageDigest.getInstance("SHA-256"); 
+            // Se convierte el texto a bytes usando siempre la misma codificacion UTF 8 para
+            // que no use la codificacion por defecto y termine generando hashes distintos
+            // luego se devuelve en bytes el texto ya encriptado.
+            byte[] hashBytes = digest.digest(texto.getBytes(StandardCharsets.UTF_8)); 
             StringBuilder sb = new StringBuilder();
             for (byte b : hashBytes) {
-                sb.append(String.format("%02x", b));
+                // Con la ayuda del strin Builder convertimos todos esos bytes
+                // en un codigo hexadecimal que es devuelto como texto plano
+                // Es lo que luego vamos a almacenar en nuesta BBDD
+                sb.append(String.format("%02x", b)); 
             }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
+            return sb.toString(); // una vez todos los bytes se conviertieron a hexadecimal se devuelve el resultado
+        } catch (NoSuchAlgorithmException e) { // No deberia dar error, pero en caso de que si aqui se gestiona ese error
             throw new RuntimeException("Error al generar el hash", e);
         }
     }
