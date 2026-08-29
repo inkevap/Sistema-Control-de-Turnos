@@ -38,6 +38,7 @@ public class SolicitudEmpleadoServiceImpl implements ISolicitudEmpleadoService {
     public List<SolicitudGestionEmpleado> listarResueltas() {
         List<SolicitudGestionEmpleado> resultado = new ArrayList<>();
         for (SolicitudGestionEmpleado solicitud : solicitudDAO.listarTodos()) {
+            // Se filtran las solicitudes ya respondidas
             if (solicitud.getEstado() == EstadoSolicitud.APROBADA
                     || solicitud.getEstado() == EstadoSolicitud.RECHAZADA) {
                 resultado.add(solicitud);
@@ -74,6 +75,7 @@ public class SolicitudEmpleadoServiceImpl implements ISolicitudEmpleadoService {
             throw new IllegalStateException("La solicitud no existe");
         }
         // RN02: si ya no esta pendiente de RRHH, otro administrador ya la proceso
+        // Esta logica esta pendiente de ser revisada porque al ser resuelta se mueve automaticamente a otro estado
         if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE_RRHH) {
             throw new IllegalStateException("Esta solicitud ya esta siendo procesada por otro administrador RHH");
         }

@@ -130,6 +130,9 @@ public class Usuario {
         return 1;
     }
 
+    
+    // Logica que no termine usando pero que se estaba pensando para evitar a los 
+    // usuarios duplicados, descartado para mantener la logica de negocio en DAO o capa de servicio
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

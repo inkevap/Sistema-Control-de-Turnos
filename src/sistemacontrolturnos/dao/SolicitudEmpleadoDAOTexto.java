@@ -14,6 +14,8 @@ public class SolicitudEmpleadoDAOTexto implements ISolicitudEmpleadoDAO {
     @Override
     public void guardar(SolicitudGestionEmpleado solicitud) {
         List<String> lineas = ManejadorArchivos.leerLineas(Constantes.ARCHIVO_SOLICITUDES_EMPLEADO);
+        // esto va a generar ID duplicado si se borra una linea, porque solo esta contando las 
+        // lineas existentes y le suma uno
         int siguienteId = lineas.size() + 1;
         solicitud.setIdSolicitud(siguienteId);
         ManejadorArchivos.agregarLinea(Constantes.ARCHIVO_SOLICITUDES_EMPLEADO, construirLinea(solicitud));
@@ -63,7 +65,15 @@ public class SolicitudEmpleadoDAOTexto implements ISolicitudEmpleadoDAO {
         solicitud.setFechaFin(LocalDate.parse(campos[4]));
         solicitud.setMotivo(campos[5]);
         solicitud.setEstado(EstadoSolicitud.valueOf(campos[6]));
+        /* 
+        // A diferencia de los otros parsers aqui utilizamos un operador ternario
+        // para evitar que nos de un error si el campo es vacio
+        // por lo que lo poenmos vacio en caso de que el campo  correspondiente 
+        // a este campo este vacio en la linea.
+        // Esto 
+        */
         solicitud.setProcesadoPor(campos.length > 7 ? campos[7] : "");
+        
         return solicitud;
     }
 

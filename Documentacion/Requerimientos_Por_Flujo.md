@@ -7,10 +7,14 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 ### Flujo Normal Basico
 - [x] Login con usuario y contrasena
 - [x] Menu con las opciones "Mantenimiento de usuario" y "Gestion de Roles"
+- [ ] ==Quitar el boton salir==
 - [x] Al entrar a "Mantenimiento de usuario": submenu con Agregar Empleado, Consultar Usuario, Solicitudes, Boton Regresar
 - [x] Agregar Empleado: formulario con DPI, Nombre Completo, Usuario, Area, Turno (Matutino/Vespertino/Diurno), Rol (Empleado/Admin Area/Admin RHH), Supervisor, Correo, Contrasena, Boton Registrar, Boton Regresar
+- [ ] ==Limitar el combobox a solo supervisores==
+- [ ] ==Quitar turno nocturno==
 - [x] Validar que el usuario no este duplicado antes de guardar
-- [ ] Preguntar "Verificar la entrada duplicada es parte del DAO o es Logica de negocio (Capa de servicio)?"
+- [x] Preguntar "Verificar la entrada duplicada es parte del DAO o es Logica de negocio (Capa de servicio)?"
+- [ ] ==Solo el DPI debe ser la verificacion de duplicado == (Cambie a DPI y Nombre de Usuario)
 - [x] Guardar el empleado creado
 - [x] Mensaje de exito "se creo correctamente"
 - [x] Guardar en bitacora la accion de agregar
@@ -24,7 +28,8 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Filtro de busqueda con lista de empleados
 - [x] Buscar por el filtro
 - [x] Mostrar Usuario, Area, Estado (Activo/Inactivo), Acciones
-- [ ] Preguntar "Acciones es solo inactivar o tambien modificar informacion del usuario? en el CU1 solo se menciona inactivar"
+- [x] Preguntar "Acciones es solo inactivar o tambien modificar informacion del usuario? en el CU1 solo se menciona inactivar"
+- [ ] ==Cuando se elimina el Rol se debe quedar sin rol==
 - [x] Boton Regresar
 
 ### FA03 - Estado Inactivo
@@ -49,9 +54,10 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Al Aprobar: validar que la solicitud no haya sido aprobada previamente por otro Admin RHH
 - [x] Notificar por correo la confirmacion de aprobacion al empleado
 - [x] Boton Regresar
+- [ ] ==Arreglar bug de que se aceptan todos de golpe cuando hay multiples solicitudes.==
 
 ### FA07 - Boton Rechazar
-- [ ] Validar que la solicitud no haya sido aprobada previamente por otro Admin RHH
+- [x] Validar que la solicitud no haya sido aprobada previamente por otro Admin RHH
 - [x] Notificar por correo el rechazo al empleado
 
 ### FA08 - Boton Regresar
@@ -59,7 +65,7 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 
 ### FA09 - Opcion Gestion de Roles (Agregar)
 - [x] Pantalla con Agregar Rol (boton Agregar), Eliminar Rol (boton Eliminar), Boton Regresar
-- [ ] Preguntar "Es necesario el boton regresar si con cerrar la ventana se logra el mismo resultado"
+- [x] Preguntar "Es necesario el boton regresar si con cerrar la ventana se logra el mismo resultado"
 - [x] Ingresar usuario y rol
 - [x] Boton Agregar
 - [x] Mensaje de exito "La asignacion de rol ha sido exitosa"
@@ -68,86 +74,91 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Ingresar usuario y el rol a eliminar
 - [x] Boton Eliminar
 - [x] Mensaje de exito "La eliminacion del rol ha sido exitosa"
-- [ ] Preguntar "Al eliminar el rol queda el rol mas bajo que seria "EMPLEADO" o deberia quedar un rol vacio"
+- [x] Preguntar "Al eliminar el rol queda el rol mas bajo que seria "EMPLEADO" o deberia quedar un rol vacio"
+- [ ] Agregar un rol vacio
 
 ### FA10 - Solicitud ya aprobada
 - [x] Validar que la solicitud ya fue aprobada previamente
 - [x] Bloquear la accion de aprobacion
 - [ ] Mensaje "Esta solicitud ya esta siendo procesada por otro administrador RRHH"
-- [ ] Preguntar " Si la solicitud ya fue aprobada pasa a solicitud respondida, debo mostrar este mensaje aun?" 
+- [x] Preguntar "Si la solicitud ya fue aprobada pasa a solicitud respondida, debo mostrar este mensaje aun?"NO 
 
 ### Postcondiciones
 - [x] Enviar correo electronico al empleado notificando el motivo de su inactivacion
+- [x] Preguntar "Que se debe hacer cuando mandar el correo falle? no esta estipulado en los casos de uso"
+- [ ] Queda en un log si es error de sistema. sino usuario debe actualizar el correo.
 
 ### Reglas de Negocio
-- [ ] RN01: solo el administrador modifica a los empleados
-- [ ] RN02: una solicitud solo puede ser aprobada por un Admin RHH; bloquear que una solicitud ya aprobada o rechazada se vuelva a procesar
-- [ ] Preguntar "RN02: esto aplica? porque yo estoy moviendo las solicitudes respondidas a una tabla no modificable"
+- [x] RN01: solo el administrador modifica a los empleados
+- [x] Preguntar " A que se refiere con solo el administrador modifica a los empleados, se refiere a los datos o a sus horarios?"
+- [x] RN02: una solicitud solo puede ser aprobada por un Admin RHH; bloquear que una solicitud ya aprobada o rechazada se vuelva a procesar
+- [x] Preguntar "RN02: esto aplica? porque yo estoy moviendo las solicitudes respondidas a una tabla no modificable"
+- [ ] ==Agregar pantalla de cambio de contraseña==
 
 ---
 
 ## CU2 - Marcaje
 
 ### Flujo Normal Basico
-- [ ] Login con usuario y contrasena
-- [ ] Opcion Marcaje
-- [ ] Pantalla con opciones: Timer, Marcar Entrada, Marcar Primer descanso, Marcar Segundo descanso, Marcar salida, Informacion del Marcaje, Boton Regresar
-- [ ] Marcar Entrada valida la hora de entrada
-- [ ] Mensaje "Marcaje realizado con exito"
-- [ ] Guardar en bitacora
+- [x] Login con usuario y contrasena
+- [x] Opcion Marcaje
+- [x] Pantalla con opciones: Timer, Marcar Entrada, Marcar Primer descanso, Marcar Segundo descanso, Marcar salida, Informacion del Marcaje, Boton Regresar
+- [x] Marcar Entrada valida la hora de entrada
+- [x] Mensaje "Marcaje realizado con exito"
+- [x] Guardar en bitacora
 
 ### FA01 - Validacion de Credenciales
-- [ ] Validar credenciales incorrectas
-- [ ] Mensaje "Credenciales incorrectas"
-- [ ] Retorna al login
+- [x] Validar credenciales incorrectas
+- [x] Mensaje "Credenciales incorrectas"
+- [x] Retorna al login
 
 ### FA02 - Validacion entrada tarde
-- [ ] Validar que la entrada se haya realizado despues de las 8:00 am
+- [x] Validar que la entrada se haya realizado despues de las 8:00 am
 
 ### FA03 - Marcaje primer Descanso
-- [ ] Seleccionar marcar descanso
-- [ ] Validar que se haya marcado la entrada
-- [ ] Mensaje de exito al registrar
+- [x] Seleccionar marcar descanso
+- [x] Validar que se haya marcado la entrada
+- [x] Mensaje de exito al registrar
 
 ### FA04 - Marcaje segundo Descanso
-- [ ] Seleccionar marcar descanso
-- [ ] Validar que se haya marcado el primer descanso
-- [ ] Mensaje de exito al registrar
+- [x] Seleccionar marcar descanso
+- [x] Validar que se haya marcado el primer descanso
+- [x] Mensaje de exito al registrar
 
 ### FA05 - Mensaje de alerta Primer descanso
-- [ ] Validar que no se ha marcado la entrada
-- [ ] Mensaje "Debe marcar la entrada antes de registrar el descanso."
+- [x] Validar que no se ha marcado la entrada
+- [x] Mensaje "Debe marcar la entrada antes de registrar el descanso."
 
 ### FA06 - Mensaje de alerta segundo descanso
-- [ ] Validar que no se ha marcado el primer descanso
-- [ ] Mensaje "Debe marcar el primer descanso antes de registrar el segundo descanso."
+- [x] Validar que no se ha marcado el primer descanso
+- [x] Mensaje "Debe marcar el primer descanso antes de registrar el segundo descanso."
 
 ### FA07 - Marcar salida
-- [ ] Seleccionar marcar salida
-- [ ] Validar que se hayan marcado ambos descansos
-- [ ] Mensaje de exito al registrar
+- [x] Seleccionar marcar salida
+- [x] Validar que se hayan marcado ambos descansos
+- [x] Mensaje de exito al registrar
 
 ### FA08 - Mensaje de alerta Salida (falta primer descanso)
-- [ ] Validar que no se ha marcado el primer descanso
-- [ ] Mensaje "Debe marcar el primer descanso antes de registrar la salida."
+- [x] Validar que no se ha marcado el primer descanso
+- [x] Mensaje "Debe marcar el primer descanso antes de registrar la salida."
 
 ### FA09 - Mensaje de alerta Salida (falta segundo descanso)
-- [ ] Validar que no se ha marcado el segundo descanso
-- [ ] Mensaje "Debe marcar el segundo descanso antes de registrar la salida."
+- [x] Validar que no se ha marcado el segundo descanso
+- [x] Mensaje "Debe marcar el segundo descanso antes de registrar la salida."
 
 ### FA10 - Marcaje repetido
-- [ ] Validar que ya se realizo el mismo tipo de marcaje en la jornada actual
-- [ ] Bloquear el nuevo registro
-- [ ] Mensaje "No puede repetir el mismo marcaje"
+- [x] Validar que ya se realizo el mismo tipo de marcaje en la jornada actual
+- [x] Bloquear el nuevo registro
+- [x] Mensaje "No puede repetir el mismo marcaje"
 
 ### Informacion del Marcaje
-- [ ] Opcion Informacion del marcaje
-- [ ] Mostrar la informacion de los marcajes realizados
-- [ ] Boton regresar
+- [x] Opcion Informacion del marcaje
+- [x] Mostrar la informacion de los marcajes realizados
+- [x] Boton regresar
 
 ### Reglas de Negocio
-- [ ] RN01: la entrada es valida antes o a las 8:00 am; despues de las 8:01 am se marca como tardia
-- [ ] RN02: no permitir registrar el mismo tipo de marcaje mas de una vez en la misma jornada
+- [x] RN01: la entrada es valida antes o a las 8:00 am; despues de las 8:01 am se marca como tardia
+- [x] RN02: no permitir registrar el mismo tipo de marcaje mas de una vez en la misma jornada
 
 ---
 

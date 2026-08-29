@@ -17,7 +17,8 @@ public class BitacoraDAOTexto implements IBitacoraDAO {
         List<String> lineas = ManejadorArchivos.leerLineas(Constantes.ARCHIVO_BITACORA);
         int siguienteId = lineas.size() + 1;
         bitacora.setIdBitacora(siguienteId);
-
+        // En este caso como son pocos parametros usamos join, en lugar de crear una funcion para
+        // construir las lineas
         String linea = String.join(Constantes.DELIMITADOR,
                 String.valueOf(bitacora.getIdBitacora()),
                 bitacora.getNombreUsuario(),
@@ -27,6 +28,8 @@ public class BitacoraDAOTexto implements IBitacoraDAO {
         ManejadorArchivos.agregarLinea(Constantes.ARCHIVO_BITACORA, linea);
     }
 
+    
+    // metodo que probablemente vaya a usar a futuro
     @Override
     public List<Bitacora> listarTodos() {
         List<Bitacora> resultado = new ArrayList<>();
