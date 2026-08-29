@@ -3,8 +3,12 @@ package sistemacontrolturnos.servicio;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import sistemacontrolturnos.dao.IUsuarioDAO;
 import sistemacontrolturnos.dto.CredencialesDTO;
 import sistemacontrolturnos.dto.UsuarioDTO;
@@ -18,6 +22,24 @@ public class UsuarioServiceImpl implements IUsuarioService {
     private final IUsuarioDAO usuarioDAO;
     private final IBitacoraService bitacoraService;
     private final ICorreoService correoService;
+
+    // Almacen EN MEMORIA de los codigos de recuperacion (clave = nombre de usuario
+    // en minusculas). Es static para que sobreviva entre instancias del servicio
+    // durante la misma ejecucion de la app; se pierde al cerrar el programa.
+    private static final Map<String, CodigoRecuperacion> CODIGOS_RECUPERACION = new HashMap<>();
+    private static final int MINUTOS_VALIDEZ_CODIGO = 15;
+    private static final SecureRandom ALEATORIO = new SecureRandom();
+
+    // Guarda el codigo generado junto con su momento de expiracion.
+    private static final class CodigoRecuperacion {
+        final String codigo;
+        final LocalDateTime expira;
+
+        CodigoRecuperacion(String codigo, LocalDateTime expira) {
+            this.codigo = codigo;
+            this.expira = expira;
+        }
+    }
 
     public UsuarioServiceImpl(IUsuarioDAO usuarioDAO, IBitacoraService bitacoraService, ICorreoService correoService) {
         this.usuarioDAO = usuarioDAO;
@@ -144,7 +166,61 @@ public class UsuarioServiceImpl implements IUsuarioService {
         bitacoraService.registrar(nombreUsuario, "Se elimino el rol del usuario " + nombreUsuario + " (queda SIN_ROL)");
     }
 
-    
+    @Override
+    public void solicitarCodigoRecuperacion(String nombreUsuario) {
+        Usuario usuario = usuarioDAO.buscarPorUsuario(nombreUsuario);
+        // Solo un usuario existente y activo puede recuperar su contrasena.
+        if (usuario == null || usuario.getEstado() != EstadoUsuario.ACTIVO) {
+            throw new IllegalStateException("No existe un usuario activo con ese nombre de usuario");
+        }
+
+        // Codigo de 6 digitos (000000-999999) con relleno de ceros a la izquierda.
+        String codigo = String.format("%06d", ALEATORIO.nextInt(1_000_000));
+        String clave = usuario.getNombreUsuario().toLowerCase();
+        CODIGOS_RECUPERACION.put(clave,
+                new CodigoRecuperacion(codigo, LocalDateTime.now().plusMinutes(MINUTOS_VALIDEZ_CODIGO)));
+
+        correoService.enviarCorreo(usuario.getCorreo(), "Codigo de recuperacion de contrasena",
+                "Hola " + usuario.getNombreCompleto() + ",\n\nTu codigo de recuperacion es: " + codigo
+                + "\nEste codigo vence en " + MINUTOS_VALIDEZ_CODIGO + " minutos.\n\n"
+                + "Si no solicitaste este cambio, ignora este correo.");
+        bitacoraService.registrar(usuario.getNombreUsuario(), "Se solicito un codigo de recuperacion de contrasena");
+    }
+
+    @Override
+    public void restablecerContrasena(String nombreUsuario, String codigo, String nuevaContrasena) {
+        Usuario usuario = usuarioDAO.buscarPorUsuario(nombreUsuario);
+        if (usuario == null) {
+            throw new IllegalStateException("El usuario no existe");
+        }
+
+        String clave = usuario.getNombreUsuario().toLowerCase();
+        CodigoRecuperacion registro = CODIGOS_RECUPERACION.get(clave);
+        if (registro == null) {
+            throw new IllegalStateException("No hay un codigo de recuperacion vigente. Solicita uno nuevo.");
+        }
+        if (LocalDateTime.now().isAfter(registro.expira)) {
+            CODIGOS_RECUPERACION.remove(clave);
+            throw new IllegalStateException("El codigo ha expirado. Solicita uno nuevo.");
+        }
+        if (codigo == null || !registro.codigo.equals(codigo.trim())) {
+            throw new IllegalStateException("El codigo ingresado no es correcto");
+        }
+        if (nuevaContrasena == null || nuevaContrasena.trim().isEmpty()) {
+            throw new IllegalStateException("La nueva contrasena no puede estar vacia");
+        }
+
+        usuario.setContrasenaHash(hashear(nuevaContrasena));
+        usuarioDAO.actualizar(usuario);
+        // El codigo es de un solo uso: se elimina apenas se usa con exito.
+        CODIGOS_RECUPERACION.remove(clave);
+
+        correoService.enviarCorreo(usuario.getCorreo(), "Tu contrasena fue restablecida",
+                "Hola " + usuario.getNombreCompleto() + ",\n\nTu contrasena se restablecio correctamente.");
+        bitacoraService.registrar(usuario.getNombreUsuario(), "Restablecio su contrasena mediante codigo de recuperacion");
+    }
+
+
     // Metodo para crear el hash cifrado en SHA-256, pude haber usado Bcrypt pero soy flojo lo siento
     // Ya tenia este codigo en algun otro repo
     // Como funciona? Solo Dios sabe, pero ahorita vemos que pedales

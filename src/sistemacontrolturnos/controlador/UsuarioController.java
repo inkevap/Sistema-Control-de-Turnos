@@ -46,4 +46,12 @@ public class UsuarioController {
     public void eliminarRol(String nombreUsuario) {
         usuarioService.eliminarRol(nombreUsuario);
     }
+
+    public void solicitarCodigoRecuperacion(String nombreUsuario) {
+        usuarioService.solicitarCodigoRecuperacion(nombreUsuario);
+    }
+
+    public void restablecerContrasena(String nombreUsuario, String codigo, String nuevaContrasena) {
+        usuarioService.restablecerContrasena(nombreUsuario, codigo, nuevaContrasena);
+    }
 }
