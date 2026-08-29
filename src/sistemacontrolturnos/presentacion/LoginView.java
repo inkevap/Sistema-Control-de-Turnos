@@ -55,6 +55,12 @@ public class LoginView extends JFrame {
         gbc.gridx = 1;
         gbc.gridy = 2;
         add(botonIniciarSesion, gbc);
+
+        JButton botonOlvidoContrasena = new JButton("Olvide mi contrasena");
+        botonOlvidoContrasena.addActionListener(evento -> new RecuperarContrasenaView().setVisible(true));
+        gbc.gridx = 1;
+        gbc.gridy = 3;
+        add(botonOlvidoContrasena, gbc);
     }
 
     private void iniciarSesion() {

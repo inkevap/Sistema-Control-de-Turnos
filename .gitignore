@@ -7,3 +7,4 @@ dist/
 .vscode/
 config.properties
 data/usuarios.txt
+data/log.txt
