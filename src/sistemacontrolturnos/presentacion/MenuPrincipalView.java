@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
 import sistemacontrolturnos.presentacion.marcaje.MarcajeView;
+import sistemacontrolturnos.presentacion.turno.AsignacionTurnoView;
 import sistemacontrolturnos.presentacion.usuario.GestionRolesView;
 import sistemacontrolturnos.presentacion.usuario.MantenimientoUsuarioView;
 
@@ -44,7 +45,11 @@ public class MenuPrincipalView extends JFrame {
             panel.add(botonRoles);
         }
         if (rol == Rol.ADMIN_AREA) {
-            panel.add(new JButton("Asignacion de Turnos"));
+            JButton botonAsignacion = new JButton("Asignacion de Turnos");
+            botonAsignacion.addActionListener(evento ->
+                    new AsignacionTurnoView(usuarioActivo.getNombreUsuario()).setVisible(true));
+            panel.add(botonAsignacion);
+
             panel.add(new JButton("Gestion de Solicitudes"));
         }
         if (rol == Rol.EMPLEADO) {
