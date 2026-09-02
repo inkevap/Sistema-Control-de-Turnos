@@ -9,6 +9,7 @@ import sistemacontrolturnos.entidad.Rol;
 import sistemacontrolturnos.entidad.Usuario;
 import sistemacontrolturnos.presentacion.marcaje.MarcajeView;
 import sistemacontrolturnos.presentacion.turno.AsignacionTurnoView;
+import sistemacontrolturnos.presentacion.turno.GestionSolicitudesView;
 import sistemacontrolturnos.presentacion.usuario.GestionRolesView;
 import sistemacontrolturnos.presentacion.usuario.MantenimientoUsuarioView;
 
@@ -50,7 +51,10 @@ public class MenuPrincipalView extends JFrame {
                     new AsignacionTurnoView(usuarioActivo.getNombreUsuario()).setVisible(true));
             panel.add(botonAsignacion);
 
-            panel.add(new JButton("Gestion de Solicitudes"));
+            JButton botonSolicitudes = new JButton("Gestion de Solicitudes");
+            botonSolicitudes.addActionListener(evento ->
+                    new GestionSolicitudesView(usuarioActivo.getNombreUsuario()).setVisible(true));
+            panel.add(botonSolicitudes);
         }
         if (rol == Rol.EMPLEADO) {
             JButton botonMarcaje = new JButton("Marcaje");
