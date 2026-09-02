@@ -24,6 +24,55 @@ public class SolicitudEmpleadoServiceImpl implements ISolicitudEmpleadoService {
     }
 
     @Override
+    public List<SolicitudGestionEmpleado> listarPendientesArea() {
+        List<SolicitudGestionEmpleado> resultado = new ArrayList<>();
+        for (SolicitudGestionEmpleado solicitud : solicitudDAO.listarTodos()) {
+            if (solicitud.getEstado() == EstadoSolicitud.PENDIENTE_AREA) {
+                resultado.add(solicitud);
+            }
+        }
+        return resultado;
+    }
+
+    @Override
+    public void aprobarPorArea(int idSolicitud, String nombreUsuarioAdmin) {
+        // Etapa 1 (CU4 FA03): al aprobar el area, la solicitud se envia a RRHH.
+        SolicitudGestionEmpleado solicitud = obtenerPendienteArea(idSolicitud);
+        solicitud.setEstado(EstadoSolicitud.PENDIENTE_RRHH);
+        solicitud.setProcesadoPor(nombreUsuarioAdmin);
+        solicitudDAO.actualizar(solicitud);
+        notificar(solicitud, "APROBADA por el administrador de area y enviada a RRHH");
+        bitacoraService.registrar(nombreUsuarioAdmin,
+                "El area aprobo la solicitud #" + idSolicitud + " del usuario "
+                + solicitud.getNombreUsuarioEmpleado() + " (enviada a RRHH)");
+    }
+
+    @Override
+    public void rechazarPorArea(int idSolicitud, String nombreUsuarioAdmin) {
+        // Etapa 1 (CU4 FA04): al rechazar el area, el flujo termina.
+        SolicitudGestionEmpleado solicitud = obtenerPendienteArea(idSolicitud);
+        solicitud.setEstado(EstadoSolicitud.RECHAZADA);
+        solicitud.setProcesadoPor(nombreUsuarioAdmin);
+        solicitudDAO.actualizar(solicitud);
+        notificar(solicitud, "RECHAZADA por el administrador de area");
+        bitacoraService.registrar(nombreUsuarioAdmin,
+                "El area rechazo la solicitud #" + idSolicitud + " del usuario "
+                + solicitud.getNombreUsuarioEmpleado());
+    }
+
+    // RN02: si la solicitud ya no esta PENDIENTE_AREA, otro admin ya la proceso.
+    private SolicitudGestionEmpleado obtenerPendienteArea(int idSolicitud) {
+        SolicitudGestionEmpleado solicitud = solicitudDAO.buscarPorId(idSolicitud);
+        if (solicitud == null) {
+            throw new IllegalStateException("La solicitud no existe");
+        }
+        if (solicitud.getEstado() != EstadoSolicitud.PENDIENTE_AREA) {
+            throw new IllegalStateException("Esta solicitud ya esta siendo procesada por otro administrador");
+        }
+        return solicitud;
+    }
+
+    @Override
     public List<SolicitudGestionEmpleado> listarPendientesRRHH() {
         List<SolicitudGestionEmpleado> resultado = new ArrayList<>();
         for (SolicitudGestionEmpleado solicitud : solicitudDAO.listarTodos()) {
