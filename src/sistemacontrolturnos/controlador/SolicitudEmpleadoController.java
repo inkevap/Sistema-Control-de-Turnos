@@ -28,6 +28,20 @@ public class SolicitudEmpleadoController {
         this.solicitudService = new SolicitudEmpleadoServiceImpl(solicitudDAO, usuarioDAO, bitacoraService, correoService);
     }
 
+    // --- Etapa 1: Administrador de Area (CU4) ---
+    public List<SolicitudGestionEmpleado> listarPendientesArea() {
+        return solicitudService.listarPendientesArea();
+    }
+
+    public void aprobarPorArea(int idSolicitud, String nombreUsuarioAdmin) {
+        solicitudService.aprobarPorArea(idSolicitud, nombreUsuarioAdmin);
+    }
+
+    public void rechazarPorArea(int idSolicitud, String nombreUsuarioAdmin) {
+        solicitudService.rechazarPorArea(idSolicitud, nombreUsuarioAdmin);
+    }
+
+    // --- Etapa 2: Administrador de RRHH (CU1) ---
     public List<SolicitudGestionEmpleado> listarPendientesRRHH() {
         return solicitudService.listarPendientesRRHH();
     }
