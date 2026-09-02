@@ -39,3 +39,5 @@
 39|adminRRH|RRHH aprobo la solicitud #6 del usuario Ejem1|2026-08-28T22:39:47.054
 40|Ejem1|Se elimino el rol del usuario Ejem1 (queda SIN_ROL)|2026-08-28T22:41:02.11
 41|Ejem1|Se asigno el rol EMPLEADO al usuario Ejem1|2026-08-28T22:41:05.209
+42|liebbergott|Se solicito un codigo de recuperacion de contrasena|2026-08-28T23:02:39.198
+43|liebbergott|Restablecio su contrasena mediante codigo de recuperacion|2026-08-28T23:03:18.204
