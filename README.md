@@ -8,7 +8,8 @@ Sistema de escritorio para la gestión de turnos, marcaje de asistencia, usuario
 - **Interfaz gráfica:** `javax.swing`
 - **Persistencia:** archivos de texto plano (`.txt`), delimitados por `|` — sin base de datos ni frameworks
 - **Proyecto:** NetBeans (Ant)
-- **Dependencias:** [JavaMail](https://javaee.github.io/javamail/) (`lib/javax.mail-1.6.2.jar`) para notificaciones por correo
+- **Dependencias:** [JavaMail](https://javaee.github.io/javamail/) (`lib/javax.mail-1.6.2.jar`) para notificaciones por correo; JUnit 4.13.2 + Hamcrest para pruebas
+- **Configuración:** credenciales SMTP externalizadas en `config.properties` (no versionado; ver `config.properties.example`)
 
 ## Arquitectura
 
@@ -16,13 +17,13 @@ Arquitectura en capas: `Presentación → Controlador → DTO → Servicio → D
 
 ```
 src/sistemacontrolturnos/
-├── presentacion/   Vistas Swing (por modulo: usuario/, marcaje/, ...)
+├── presentacion/   Vistas Swing (por modulo: usuario/, marcaje/, turno/, ...)
 ├── controlador/    Orquestan Vista <-> Servicio (usan DTO)
 ├── dto/            Objetos de transporte Controlador -> Servicio
 ├── servicio/       Interfaces (I*Service) + implementaciones (*ServiceImpl)
 ├── dao/            Interfaces (I*DAO) + implementaciones (*DAOTexto)
 ├── entidad/        Modelo de datos persistente
-└── util/           ManejadorArchivos, Constantes
+└── util/           ManejadorArchivos, Constantes, ConfiguracionApp, RegistroErrores
 ```
 
 ## Casos de uso
@@ -31,18 +32,25 @@ src/sistemacontrolturnos/
 |---|---|---|
 | CU1 | Mantenimiento de Usuarios | ✅ Completo |
 | CU2 | Marcaje | ✅ Completo |
-| CU3 | Asignación de Turnos | ⬜ Pendiente |
-| CU4 | Gestión de solicitudes | ⬜ Pendiente |
+| CU3 | Asignación de Turnos | ✅ Completo |
+| CU4 | Gestión de solicitudes | ✅ Completo |
 | CU5 | Gestión del Empleado | ⬜ Pendiente |
 
 Ver el checklist detallado, bloque por bloque, en [`Documentacion/Plan_Tareas_Detallado.md`](Documentacion/Plan_Tareas_Detallado.md), y el backlog de historias de usuario en [`Documentacion/Backlog_Scrum.md`](Documentacion/Backlog_Scrum.md).
+
+### Funcionalidades adicionales
+
+- **Recuperación de contraseña** self-service por código de un solo uso enviado por correo (con expiración).
+- **Log central de errores** en `data/log.txt` (`util/RegistroErrores`), enganchado en los `catch` de las capas y en un handler global de excepciones no capturadas.
+- **Roles** con rol vacío `SIN_ROL` (patrón Null Object) al remover el rol de un usuario.
 
 ## Cómo ejecutar
 
 1. Abrir el proyecto en NetBeans (`File > Open Project`).
 2. Confirmar que la librería `lib/javax.mail-1.6.2.jar` está agregada en Properties → Libraries.
-3. **Clean and Build**.
-4. Ejecutar (`F6`), o correr `SistemaControlTurnos.java`.
+3. Copiar `config.properties.example` a `config.properties` y completar las credenciales SMTP (para que las notificaciones por correo se envíen de verdad).
+4. **Clean and Build**.
+5. Ejecutar (`F6`), o correr `SistemaControlTurnos.java`.
 
 ### Usuarios de prueba
 
@@ -51,7 +59,7 @@ Ver el checklist detallado, bloque por bloque, en [`Documentacion/Plan_Tareas_De
 | `admin` | `admin123` | ADMIN_RRHH |
 | `wendy` | `empleado123` | EMPLEADO |
 
-> Nota: las credenciales de envío de correo (`Constantes.SMTP_USUARIO`/`SMTP_CONTRASENA`) son placeholders — reemplázalas con una cuenta y contraseña de aplicación reales para que las notificaciones por correo se envíen de verdad.
+> Nota: las contraseñas se guardan hasheadas (SHA-256) en `data/usuarios.txt`, que no se versiona. Las credenciales de envío de correo se configuran en `config.properties` (a partir de `config.properties.example`) — usa una cuenta y contraseña de aplicación reales para que las notificaciones por correo se envíen de verdad.
 
 ## Flujo de Git
 
