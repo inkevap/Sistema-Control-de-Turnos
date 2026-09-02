@@ -55,6 +55,7 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Notificar por correo la confirmacion de aprobacion al empleado
 - [x] Boton Regresar
 - [x] ==Arreglar bug de que se aceptan todos de golpe cuando hay multiples solicitudes.==
+- [ ] Preguntar "El ID esta bien que sea una suma básica"
 
 ### FA07 - Boton Rechazar
 - [x] Validar que la solicitud no haya sido aprobada previamente por otro Admin RHH
@@ -75,7 +76,7 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 - [x] Boton Eliminar
 - [x] Mensaje de exito "La eliminacion del rol ha sido exitosa"
 - [x] Preguntar "Al eliminar el rol queda el rol mas bajo que seria "EMPLEADO" o deberia quedar un rol vacio"
-- [ ] Agregar un rol vacio
+- [x] ==Agregar un rol vacio==
 
 ### FA10 - Solicitud ya aprobada
 - [x] Validar que la solicitud ya fue aprobada previamente
@@ -86,14 +87,15 @@ Checklist de todo lo que debe programarse, extraido de los 5 documentos de casos
 ### Postcondiciones
 - [x] Enviar correo electronico al empleado notificando el motivo de su inactivacion
 - [x] Preguntar "Que se debe hacer cuando mandar el correo falle? no esta estipulado en los casos de uso"
-- [ ] Queda en un log si es error de sistema. sino usuario debe actualizar el correo.
+- [x] ==Queda en un log si es error de sistema. sino usuario debe actualizar el correo.==
+- [x] ==Se agrego un registro de logs al sistema==
 
 ### Reglas de Negocio
 - [x] RN01: solo el administrador modifica a los empleados
 - [x] Preguntar " A que se refiere con solo el administrador modifica a los empleados, se refiere a los datos o a sus horarios?"
 - [x] RN02: una solicitud solo puede ser aprobada por un Admin RHH; bloquear que una solicitud ya aprobada o rechazada se vuelva a procesar
 - [x] Preguntar "RN02: esto aplica? porque yo estoy moviendo las solicitudes respondidas a una tabla no modificable"
-- [ ] ==Agregar pantalla de cambio de contraseña==
+- [x] ==Agregar pantalla de cambio de contraseña==
 
 ---
 

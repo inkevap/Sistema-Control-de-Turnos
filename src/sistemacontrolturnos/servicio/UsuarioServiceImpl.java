@@ -26,11 +26,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
     // Almacen EN MEMORIA de los codigos de recuperacion (clave = nombre de usuario
     // en minusculas). Es static para que sobreviva entre instancias del servicio
     // durante la misma ejecucion de la app; se pierde al cerrar el programa.
-    private static final Map<String, CodigoRecuperacion> CODIGOS_RECUPERACION = new HashMap<>();
-    private static final int MINUTOS_VALIDEZ_CODIGO = 15;
-    private static final SecureRandom ALEATORIO = new SecureRandom();
+    private static final Map<String, CodigoRecuperacion> CODIGOS_RECUPERACION = new HashMap<>(); //hashmap para almacenar codigos xd
+    private static final int MINUTOS_VALIDEZ_CODIGO = 15; // tiempo de valides
+    private static final SecureRandom ALEATORIO = new SecureRandom(); //Generador de números aleatorios criptográficamente seguro
 
     // Guarda el codigo generado junto con su momento de expiracion.
+    // Es una clase interna porque solo se usa aca para no crear un map dentro de otro map
     private static final class CodigoRecuperacion {
         final String codigo;
         final LocalDateTime expira;
@@ -175,14 +176,17 @@ public class UsuarioServiceImpl implements IUsuarioService {
         }
 
         // Codigo de 6 digitos (000000-999999) con relleno de ceros a la izquierda.
-        String codigo = String.format("%06d", ALEATORIO.nextInt(1_000_000));
-        String clave = usuario.getNombreUsuario().toLowerCase();
-        CODIGOS_RECUPERACION.put(clave,
+        String codigo = String.format("%06d", ALEATORIO.nextInt(1_000_000)); // se crea le codigo de 6 digitos, el "_" es inerte solo para separacion visual
+        String clave = usuario.getNombreUsuario().toLowerCase(); // ese codigo lo relacionamos con el nombre de usuario
+        CODIGOS_RECUPERACION.put(clave, // Este put papi sobreescribe cualquier otro codigo anterior, solo el ultimo mandado es valido
+                //aqui guardamos lla llave [Usuario,Llave de recuperacion] y la llave de recuperacion
+                // representa el codigo y el tiempo que se creo mas el tiempo de validez
                 new CodigoRecuperacion(codigo, LocalDateTime.now().plusMinutes(MINUTOS_VALIDEZ_CODIGO)));
-
+               // se envia al correo
         correoService.enviarCorreo(usuario.getCorreo(), "Codigo de recuperacion de contrasena",
                 "Hola " + usuario.getNombreCompleto() + ",\n\nTu codigo de recuperacion es: " + codigo
                 + "\nEste codigo vence en " + MINUTOS_VALIDEZ_CODIGO + " minutos.\n\n"
+                        + "\nSolo el ultimo codigo solicitado es valido.\n\n"
                 + "Si no solicitaste este cambio, ignora este correo.");
         bitacoraService.registrar(usuario.getNombreUsuario(), "Se solicito un codigo de recuperacion de contrasena");
     }
@@ -195,25 +199,28 @@ public class UsuarioServiceImpl implements IUsuarioService {
         }
 
         String clave = usuario.getNombreUsuario().toLowerCase();
+        // recuperamos de todos los codigos de recuperacion, el codigo de recuperacion especifico del usuario
         CodigoRecuperacion registro = CODIGOS_RECUPERACION.get(clave);
-        if (registro == null) {
+        
+        //Validaciones
+        if (registro == null) { // codigo ya usado
             throw new IllegalStateException("No hay un codigo de recuperacion vigente. Solicita uno nuevo.");
         }
-        if (LocalDateTime.now().isAfter(registro.expira)) {
-            CODIGOS_RECUPERACION.remove(clave);
+        if (LocalDateTime.now().isAfter(registro.expira)) { // codigo esxpirado
+            CODIGOS_RECUPERACION.remove(clave); // si esta expirado se elimina
             throw new IllegalStateException("El codigo ha expirado. Solicita uno nuevo.");
         }
-        if (codigo == null || !registro.codigo.equals(codigo.trim())) {
+        if (codigo == null || !registro.codigo.equals(codigo.trim())) { // codigo escrito incorrecto | El trim sanitiza papi
             throw new IllegalStateException("El codigo ingresado no es correcto");
         }
-        if (nuevaContrasena == null || nuevaContrasena.trim().isEmpty()) {
+        if (nuevaContrasena == null || nuevaContrasena.trim().isEmpty()) { // dejo la nueva contraseña vacia
             throw new IllegalStateException("La nueva contrasena no puede estar vacia");
         }
 
         usuario.setContrasenaHash(hashear(nuevaContrasena));
         usuarioDAO.actualizar(usuario);
         // El codigo es de un solo uso: se elimina apenas se usa con exito.
-        CODIGOS_RECUPERACION.remove(clave);
+        CODIGOS_RECUPERACION.remove(clave); // se elimina el codigo usado
 
         correoService.enviarCorreo(usuario.getCorreo(), "Tu contrasena fue restablecida",
                 "Hola " + usuario.getNombreCompleto() + ",\n\nTu contrasena se restablecio correctamente.");
