@@ -49,17 +49,31 @@ Ver el checklist detallado, bloque por bloque, en [`Documentacion/Plan_Tareas_De
 1. Abrir el proyecto en NetBeans (`File > Open Project`).
 2. Confirmar que la librería `lib/javax.mail-1.6.2.jar` está agregada en Properties → Libraries.
 3. Copiar `config.properties.example` a `config.properties` y completar las credenciales SMTP (para que las notificaciones por correo se envíen de verdad).
-4. **Clean and Build**.
-5. Ejecutar (`F6`), o correr `SistemaControlTurnos.java`.
+4. **Crear los usuarios iniciales**: copiar `data/usuarios.ejemplo.txt` a `data/usuarios.txt` (ver la sección siguiente).
+5. **Clean and Build**.
+6. Ejecutar (`F6`), o correr `SistemaControlTurnos.java`.
 
-### Usuarios de prueba
+### Usuarios
 
-| Usuario | Contraseña | Rol |
-|---|---|---|
-| `admin` | `admin123` | ADMIN_RRHH |
-| `wendy` | `empleado123` | EMPLEADO |
+Por seguridad, **`data/usuarios.txt` no existe en el repositorio** — no se versionan usuarios reales (contendría datos personales y contraseñas). El archivo se genera en la primera ejecución/registro.
 
-> Nota: las contraseñas se guardan hasheadas (SHA-256) en `data/usuarios.txt`, que no se versiona. Las credenciales de envío de correo se configuran en `config.properties` (a partir de `config.properties.example`) — usa una cuenta y contraseña de aplicación reales para que las notificaciones por correo se envíen de verdad.
+Para tener usuarios por defecto y poder probar el sistema, copia la plantilla:
+
+```
+cp data/usuarios.ejemplo.txt data/usuarios.txt
+```
+
+Todos los usuarios de ejemplo usan la contraseña **`clave123`**:
+
+| Usuario | Contraseña | Rol | Notas |
+|---|---|---|---|
+| `admin` | `clave123` | ADMIN_RRHH | Mantenimiento de usuarios, roles, solicitudes RRHH |
+| `jefe` | `clave123` | ADMIN_AREA | Supervisor de `empleado1`/`empleado2`; asignación de turnos y gestión de solicitudes |
+| `jefe2` | `clave123` | ADMIN_AREA | Supervisor turno vespertino (área Ventas) |
+| `empleado1` | `clave123` | EMPLEADO | Marcaje; a cargo de `jefe` |
+| `empleado2` | `clave123` | EMPLEADO | Marcaje; a cargo de `jefe` |
+
+> Nota: las contraseñas se guardan hasheadas (SHA-256) en `data/usuarios.txt`, que no se versiona (está en `.gitignore`). Las credenciales de envío de correo se configuran en `config.properties` (a partir de `config.properties.example`) — usa una cuenta y contraseña de aplicación reales para que las notificaciones por correo se envíen de verdad.
 
 ## Flujo de Git
 
